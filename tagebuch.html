@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Becoming — Tagebuch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/journal.css">
+  <script src="/js/common.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/logged_in_landing.html" class="brand" aria-label="Becoming Tagebuch">
+          <span class="brand-mark"></span>
+          <span>Becoming</span>
+        </a>
+
+        <div class="nav-right">
+          <div class="user-menu">
+
+            <button class="user-chip" id="userMenuToggle" type="button">
+
+              <span class="avatar">MK</span>
+
+              <span>Willkommen zurück</span>
+
+            </button>
+
+            <div class="user-dropdown" id="userDropdown">
+
+              <a href="/index.html" class="dropdown-item">Ausloggen</a>
+
+            </div>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <section class="stack">
+        <article class="card intro">
+          <h1>Dein Tagebuch</h1>
+          <p>
+            Sieh dir an, was du an einzelnen Tagen geschafft hast, wie du reflektiert hast und wie sich daraus deine Wochenentwicklung zusammensetzt.
+          </p>
+          <div class="year-nav">
+            <button type="button" id="yearPrev">←</button>
+            <span id="currentYear">2026</span>
+            <button type="button" id="yearNext">→</button>
+          </div>
+        </article>
+
+        <div id="journalContent"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/tagebuch.js"></script>
+</body>
+</html>

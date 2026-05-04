@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Becoming — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="/js/common.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/logged_in_landing.html" class="brand" aria-label="Becoming Dashboard">
+          <span class="brand-mark"></span>
+          <span>Becoming</span>
+        </a>
+
+        <div class="nav-right">
+          <div class="user-menu">
+
+            <button class="user-chip" id="userMenuToggle" type="button">
+
+              <span class="avatar">MK</span>
+
+              <span>Willkommen zurück</span>
+
+            </button>
+
+            <div class="user-dropdown" id="userDropdown">
+
+              <a href="/index.html" class="dropdown-item">Ausloggen</a>
+
+            </div>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container dashboard-grid">
+      <section class="stack">
+        <article class="card hero-card">
+          <div class="hero-inner">
+            <div class="hero-copy-wrap">
+              <div class="hero-copy">
+                <span class="eyebrow">The Disciplined</span>
+                <h1>Konstanz schlägt Motivation.</h1>
+                <p>
+                  Heute liegt dein Fokus auf Selbstkontrolle, Routine und bewussten Entscheidungen.
+                  Kleine, klare Schritte bringen dich näher an die Version deiner selbst, die du aufbauen willst.
+                </p>
+
+                <div class="hero-stats">
+                  <div class="hero-stat">
+                    <strong>Level 04</strong>
+                    <span>Identity Growth</span>
+                  </div>
+                  <div class="hero-stat">
+                    <strong>5 Tage</strong>
+                    <span>Aktuelle Streak</span>
+                  </div>
+                  <div class="hero-stat">
+                    <strong>120 XP</strong>
+                    <span>Diese Woche</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-visual">
+              <div class="persona-placeholder">Persona Artwork<br>für The Disciplined</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card progress-card">
+          <div class="section-head">
+            <div>
+              <h2>Dein Fortschritt heute</h2>
+              <div class="section-sub">3 von 5 täglichen Habits abgeschlossen</div>
+            </div>
+          </div>
+
+          <div class="progress-line"><span></span></div>
+          <div class="progress-meta">
+            <span>60% Tagesfortschritt</span>
+            <span>Nächster Meilenstein: +40 XP</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="section-head">
+            <div>
+              <h2>Heute im Fokus</h2>
+              <div class="section-sub">Wenige, klare Habits statt zu vieler Aufgaben</div>
+            </div>
+          </div>
+
+          <div class="habits">
+            <label class="habit-item">
+              <input class="habit-check" type="checkbox" checked>
+              <div>
+                <div class="habit-title">30 Minuten Deep Work</div>
+                <div class="habit-desc">Arbeite konzentriert an einer Aufgabe ohne Ablenkung.</div>
+              </div>
+              <span class="habit-tag">Fokus</span>
+            </label>
+
+            <label class="habit-item">
+              <input class="habit-check" type="checkbox" checked>
+              <div>
+                <div class="habit-title">Kein Social Media bis 12 Uhr</div>
+                <div class="habit-desc">Trainiere bewussten Verzicht und reduziere Reizüberflutung.</div>
+              </div>
+              <span class="habit-tag">Selbstkontrolle</span>
+            </label>
+
+            <label class="habit-item">
+              <input class="habit-check" type="checkbox" checked>
+              <div>
+                <div class="habit-title">Morgens dieselbe Routine einhalten</div>
+                <div class="habit-desc">Stärke Konstanz durch wiederholbare, einfache Abläufe.</div>
+              </div>
+              <span class="habit-tag">Routine</span>
+            </label>
+
+            <label class="habit-item">
+              <input class="habit-check" type="checkbox">
+              <div>
+                <div class="habit-title">10 Minuten bewusste Planung</div>
+                <div class="habit-desc">Lege fest, was heute wichtig ist und was bewusst wegfällt.</div>
+              </div>
+              <span class="habit-tag">Klarheit</span>
+            </label>
+
+            <label class="habit-item">
+              <input class="habit-check" type="checkbox">
+              <div>
+                <div class="habit-title">Kurze Abendreflexion</div>
+                <div class="habit-desc">Was hat heute gut funktioniert und wo warst du konsequent?</div>
+              </div>
+              <span class="habit-tag">Reflexion</span>
+            </label>
+          </div>
+        </article>
+      </section>
+
+      <aside class="mini-grid">
+        <article class="card">
+          <div class="section-head">
+            <div>
+              <h3>Status</h3>
+              <div class="section-sub">Kompakter Überblick</div>
+            </div>
+          </div>
+
+          <div class="mini-stats">
+            <div class="mini-stat">
+              <strong>12</strong>
+              <span>Habits gesamt</span>
+            </div>
+            <div class="mini-stat">
+              <strong>87%</strong>
+              <span>Wochenquote</span>
+            </div>
+            <div class="mini-stat">
+              <strong>04</strong>
+              <span>Identity Level</span>
+            </div>
+            <div class="mini-stat">
+              <strong>Fri</strong>
+              <span>Heutiger Tag</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="section-head">
+            <div>
+              <h3>Reflexion</h3>
+              <div class="section-sub">Kurzer täglicher Check-in</div>
+            </div>
+          </div>
+
+          <div class="reflection-box" contenteditable="true" data-placeholder="Wie war dein Tag? Was ist dir heute gut gelungen?"></div>
+          <button class="btn-save" id="saveBtn">Speichern</button>
+        </article>
+
+        <article class="card">
+          <div class="section-head">
+            <div>
+              <h3>Schnellaktionen</h3>
+            </div>
+          </div>
+
+          <div class="action-list">
+            <button class="action-btn" id="openPersonaModal" type="button">
+
+            <span>Persona wechseln</span><span>→</span>
+
+          </button>
+            <a class="action-btn" href="/weekly.html">
+
+            <span>Wochenauswertung ansehen</span><span>→</span>
+
+          </a>
+
+          <a class="action-btn" href="/tagebuch.html">
+
+            <span>Zum Tagebuch</span><span>→</span>
+
+          </a>
+          </div>
+        </article>
+      </aside>
+    </div>
+  </main>
+</body>
+
+<div class="persona-modal-overlay" id="personaModal" aria-hidden="true">
+  <div class="persona-modal-card">
+    <button class="persona-modal-close" id="closePersonaModal" type="button" aria-label="Schließen">×</button>
+    <h3>Persona wechseln</h3>
+    <p>Wähle die Persona, mit der du heute weitermachen möchtest.</p>
+
+    <div class="persona-modal-body">
+      <div class="persona-grid" id="activePersonaGrid">
+        <button class="persona-option" type="button" data-persona="disciplined">
+          <div class="persona-option-visual" style="background: var(--disciplined);"></div>
+          <h4>The Disciplined</h4>
+          <p>Selbstkontrolle, Routine und Stabilität.</p>
+        </button>
+
+        <button class="persona-option" type="button" data-persona="curious">
+          <div class="persona-option-visual" style="background: var(--curious);"></div>
+          <h4>The Curious</h4>
+          <p>Lernen, Offenheit und Entwicklung.</p>
+        </button>
+
+        <button class="persona-option" type="button" data-persona="connected">
+          <div class="persona-option-visual" style="background: var(--connected);"></div>
+          <h4>The Connected</h4>
+          <p>Empathie und Beziehungen.</p>
+        </button>
+
+        <button class="persona-option" type="button" data-persona="resilient">
+          <div class="persona-option-visual" style="background: var(--resilient);"></div>
+          <h4>The Resilient</h4>
+          <p>Erholung, Anpassung und Durchhaltevermögen.</p>
+        </button>
+
+        <button class="persona-option" type="button" data-persona="intentional">
+          <div class="persona-option-visual" style="background: var(--intentional);"></div>
+          <h4>The Intentional</h4>
+          <p>Fokus, Klarheit und bewusste Entscheidungen.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/dashboard.js"></script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Becoming — Persona Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/hub.css">
+  <script src="/js/common.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav">
+        <a href="/logged_in_landing.html" class="brand" aria-label="Becoming Persona Hub">
+          <span class="brand-mark"></span>
+          <span>Becoming</span>
+        </a>
+
+        <div class="nav-right">
+          <div class="user-menu">
+
+            <button class="user-chip" id="userMenuToggle" type="button">
+
+              <span class="avatar">MK</span>
+
+              <span>Willkommen zurück</span>
+
+            </button>
+
+            <div class="user-dropdown" id="userDropdown">
+
+              <a href="/index.html" class="dropdown-item">Ausloggen</a>
+
+            </div>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container hub-grid">
+      <section class="stack">
+        <article class="card">
+  <div style="text-align:center; padding: 10px 0;">
+    <h1 style="margin:0 0 10px; font-size: 2.2rem;" id="welcomeTitle">Willkommen zurück</h1>
+    <p style="margin:0; color: var(--muted); font-size: 1rem; line-height:1.6;">
+      Kleine Schritte, täglich wiederholt, formen die Person, die du werden willst.
+    </p>
+  </div>
+</article>
+
+        
+
+        <article class="card">
+          <div class="section-head">
+            <h2>Deine aktiven Personas</h2>
+            <div class="section-sub">Wechsle bewusst zwischen deinen Entwicklungsrichtungen</div>
+          </div>
+
+          <div class="persona-list">
+            <article class="persona-card">
+              <div class="persona-visual" style="background: var(--disciplined);"></div>
+              <div class="persona-content">
+                <h3>The Disciplined</h3>
+                <p>Selbstkontrolle, Routine und bewusste Entscheidungen für mehr Stabilität im Alltag.</p>
+                <div class="progress-row">
+                <div class="progress-track"><div class="progress-fill" style="width: 76%;"></div></div>
+                <span class="progress-label">Heute 3/5 erledigt</span>
+                </div>
+                <div class="persona-meta-row">
+                <span class="persona-meta">🔥 5 Tage</span>
+                <span class="persona-meta">+120 XP diese Woche</span>
+                </div>
+              </div>
+              <a href="/dashboard.html" class="btn-primary">Weiter</a>
+            </article>
+
+            <article class="persona-card">
+              <div class="persona-visual" style="background: var(--curious);"></div>
+              <div class="persona-content">
+                <h3>The Curious</h3>
+                <p>Lernen, Offenheit und tägliche geistige Bewegung durch kleine, konsequente Impulse.</p>
+                <div class="progress-row">
+                <div class="progress-track"><div class="progress-fill" style="width: 36%;"></div></div>
+                <span class="progress-label">Heute 1/4 erledigt</span>
+                </div>
+                <div class="persona-meta-row">
+                <span class="persona-meta">🔥 2 Tage</span>
+                <span class="persona-meta">+48 XP diese Woche</span>
+                </div>
+              </div>
+              <a href="#" class="btn-secondary">Starten</a>
+            </article>
+
+            <article class="persona-card">
+              <div class="persona-visual" style="background: var(--connected);"></div>
+              <div class="persona-content">
+                <h3>The Connected</h3>
+                <p>Präsenz, Empathie und stärkere Beziehungen durch bewusste soziale Gewohnheiten.</p>
+                <div class="progress-row">
+                <div class="progress-track"><div class="progress-fill" style="width: 52%;"></div></div>
+                <span class="progress-label">Heute 2/4 erledigt</span>
+                </div>
+                <div class="persona-meta-row">
+                <span class="persona-meta">🔥 4 Tage</span>
+                <span class="persona-meta">+86 XP diese Woche</span>
+                </div>
+              </div>
+              <a href="#" class="btn-secondary">Weiter</a>
+            </article>
+          </div>
+        </article>
+
+        <article class="card add-card" id="addPersonaCard">
+          <div id="addPersonaInitial">
+            <h3>Neue Persona starten</h3>
+            <p>
+              Erweitere deinen Fokus, wenn du eine weitere Richtung persönlicher Entwicklung beginnen möchtest.
+            </p>
+            <button type="button" class="btn-primary" id="openPersonaSelection">Persona auswählen</button>
+          </div>
+
+          <div id="addPersonaSelection" class="persona-selection-hidden">
+            <div class="section-head" style="margin-bottom: 20px;">
+              <h2>Wähle eine neue Persona</h2>
+              <div class="section-sub">Erweitere deinen Fokus um eine weitere Entwicklungsrichtung</div>
+            </div>
+
+            <div class="persona-selection-grid">
+              <button class="persona-selection-card" type="button">
+                <div class="persona-selection-visual" style="background: var(--resilient);"></div>
+                <h4>The Resilient</h4>
+                <p>Erholung, Anpassung und Durchhaltevermögen.</p>
+              </button>
+
+              <button class="persona-selection-card" type="button">
+                <div class="persona-selection-visual" style="background: var(--intentional);"></div>
+                <h4>The Intentional</h4>
+                <p>Fokus, Klarheit und bewusste Entscheidungen.</p>
+              </button>
+            </div>
+
+            <button type="button" class="persona-back-btn" id="closePersonaSelection">← Zurück</button>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+
+<script src="js/hub.js"></script>
+</html>

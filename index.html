@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Becoming — Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <nav class="nav">
+          <a href="#top" class="brand" aria-label="Becoming Startseite">
+            <span class="brand-mark"></span>
+            <span>Becoming</span>
+          </a>
+
+          <div class="nav-actions">
+            <button type="button" class="btn btn-login" id="openLogin">
+              Login
+            </button>
+            <button type="button" class="btn btn-register" id="openRegister">
+              Registrieren
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <span class="eyebrow">Identity-based Habit Tracking</span>
+          <h1>
+            Werde nicht nur produktiver.<br /><span class="accent"
+              >Werde bewusster.</span
+            >
+          </h1>
+          <p>
+            Becoming hilft dir dabei, über fünf klare Personas an dir zu
+            arbeiten. Statt beliebige Gewohnheiten anzulegen, entwickelst du
+            Schritt für Schritt die Version deiner selbst, die du wirklich
+            werden willst.
+          </p>
+          <div class="hero-cta">
+            <a href="#personas" class="btn btn-primary">Starte heute</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="persona-section" id="personas">
+        <div class="container">
+          <div class="section-head">
+            <h2>Finde die Persona, die zu deinem Wachstum passt</h2>
+            <p>
+              Jede Persona steht für eine bestimmte Richtung persönlicher
+              Entwicklung und bringt ihren eigenen Fokus mit.
+            </p>
+          </div>
+
+          <div class="carousel-shell">
+            <div class="carousel-stage" id="carouselStage">
+              <div class="slide active">
+                <article class="persona-card">
+                  <div
+                    class="persona-visual"
+                    style="background: var(--disciplined)"
+                  ></div>
+                  <div class="persona-content">
+                    <small>01 · Persona</small>
+                    <h3>The Disciplined</h3>
+                    <p>
+                      Für Menschen, die durch Selbstkontrolle, Routine und
+                      bewussten Verzicht mehr Stabilität in ihren Alltag bringen
+                      wollen.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="slide">
+                <article class="persona-card">
+                  <div
+                    class="persona-visual"
+                    style="background: var(--curious)"
+                  ></div>
+                  <div class="persona-content">
+                    <small>02 · Persona</small>
+                    <h3>The Curious</h3>
+                    <p>
+                      Für Menschen, die mit Wissensdurst, Lernen und Offenheit
+                      ihren Horizont jeden Tag ein Stück weiter ausbauen
+                      möchten.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="slide">
+                <article class="persona-card">
+                  <div
+                    class="persona-visual"
+                    style="background: var(--resilient)"
+                  ></div>
+                  <div class="persona-content">
+                    <small>03 · Persona</small>
+                    <h3>The Resilient</h3>
+                    <p>
+                      Für Menschen, die Durchhaltevermögen, Erholung und
+                      Anpassungsfähigkeit stärken wollen, ohne sich dabei selbst
+                      zu verlieren.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="slide">
+                <article class="persona-card">
+                  <div
+                    class="persona-visual"
+                    style="background: var(--intentional)"
+                  ></div>
+                  <div class="persona-content">
+                    <small>04 · Persona</small>
+                    <h3>The Intentional</h3>
+                    <p>
+                      Für Menschen, die bewusste Entscheidungen treffen und mit
+                      mehr Fokus und Klarheit durch ihren Tag gehen möchten.
+                    </p>
+                  </div>
+                </article>
+              </div>
+
+              <div class="slide">
+                <article class="persona-card">
+                  <div
+                    class="persona-visual"
+                    style="background: var(--connected)"
+                  ></div>
+                  <div class="persona-content">
+                    <small>05 · Persona</small>
+                    <h3>The Connected</h3>
+                    <p>
+                      Für Menschen, die Beziehungen, Empathie und echte Präsenz
+                      in ihrem Leben gezielt vertiefen möchten.
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="carousel-nav">
+              <button
+                class="arrow-btn"
+                id="prevBtn"
+                aria-label="Vorherige Persona"
+              >
+                ←
+              </button>
+              <div class="dots" id="dots">
+                <button class="dot active" aria-label="Slide 1"></button>
+                <button class="dot" aria-label="Slide 2"></button>
+                <button class="dot" aria-label="Slide 3"></button>
+                <button class="dot" aria-label="Slide 4"></button>
+                <button class="dot" aria-label="Slide 5"></button>
+              </div>
+              <button
+                class="arrow-btn"
+                id="nextBtn"
+                aria-label="Nächste Persona"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>Becoming — Persona-basierte Habit-Tracking-Webanwendung</div>
+      </div>
+    </footer>
+
+    <div class="modal-overlay" id="loginModal" aria-hidden="true">
+      <div class="modal-card">
+        <button
+          class="modal-close"
+          type="button"
+          data-close="loginModal"
+          aria-label="Schließen"
+        >
+          ×
+        </button>
+        <h3>Login</h3>
+        <p>Schön, dass du wieder da bist.</p>
+
+        <form class="auth-form">
+          <label>
+            <span>E-Mail</span>
+            <input type="email" placeholder="name@example.com" />
+          </label>
+
+          <label>
+            <span>Passwort</span>
+            <input type="password" placeholder="••••••••" />
+          </label>
+
+          <a href="/logged_in_landing.html" class="btn btn-primary auth-submit">
+            Anmelden
+          </a>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="registerModal" aria-hidden="true">
+      <div class="modal-card">
+        <button
+          class="modal-close"
+          type="button"
+          data-close="registerModal"
+          aria-label="Schließen"
+        >
+          ×
+        </button>
+        <h3>Registrieren</h3>
+        <p>Erstelle dein Konto und starte mit deiner ersten Persona.</p>
+
+        <form class="auth-form">
+          <label>
+            <span>Name</span>
+            <input type="text" placeholder="Max Mustermann" />
+          </label>
+
+          <label>
+            <span>E-Mail</span>
+            <input type="email" placeholder="name@example.com" />
+          </label>
+
+          <label>
+            <span>Passwort</span>
+            <input type="password" placeholder="••••••••" />
+          </label>
+
+          <button type="submit" class="btn btn-primary auth-submit">
+            Konto erstellen
+          </button>
+        </form>
+      </div>
+    </div>
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
