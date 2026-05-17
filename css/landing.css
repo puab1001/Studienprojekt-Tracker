@@ -210,6 +210,79 @@
       font-size: 16px;
     }
 
+    /* ── Wie es funktioniert ────────────────────────────────────────────────── */
+    .how-section {
+      padding: 0 0 52px;
+    }
+
+    .steps-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 28px 32px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.78);
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(18px);
+    }
+
+    .step { flex: 1; }
+
+    .step-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .step-arrow {
+      font-size: 20px;
+      color: rgba(24,34,45,0.18);
+      flex-shrink: 0;
+      font-weight: 300;
+    }
+
+    @media (max-width: 720px) {
+      .steps-card { flex-direction: column; align-items: flex-start; gap: 16px; padding: 22px; }
+      .step-arrow { transform: rotate(90deg); align-self: center; }
+    }
+
+    /* ── Passwort-Toggle ────────────────────────────────────────────────────── */
+    .input-wrap { position: relative; }
+    .input-wrap input { padding-right: 84px !important; }
+    .pw-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      padding: 5px 8px;
+      border-radius: 8px;
+      letter-spacing: 0.02em;
+      transition: background 0.15s ease;
+    }
+    .pw-toggle:hover { background: rgba(91,92,240,0.08); }
+
     .persona-section {
       padding: 12px 0 72px;
     }
@@ -245,14 +318,20 @@
     }
 
     .slide {
-      display: none;
+      position: absolute;
+      inset: 0;
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 12px;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      pointer-events: none;
     }
 
     .slide.active {
-      display: flex;
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .persona-card {
@@ -282,17 +361,29 @@
     }
 
     .persona-visual::before {
-      content: "Bild folgt";
+      content: "";
       position: absolute;
-      inset: 18px;
-      border-radius: 20px;
-      border: 1.5px dashed rgba(255,255,255,0.45);
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: rgba(255,255,255,0.9);
+      width: 150px;
+      height: 150px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.10);
+      border: 1.5px solid rgba(255,255,255,0.28);
+      box-shadow: 0 0 0 40px rgba(255,255,255,0.04);
+    }
+
+    .persona-visual::after {
+      content: "";
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.16);
     }
 
     .persona-content small {
@@ -376,47 +467,49 @@
     }
 
     @media (max-width: 820px) {
-      .hero { padding-top: 56px; }
-      .persona-card {
-        grid-template-columns: 1fr;
-      }
-      .persona-visual {
-        min-height: 260px;
-      }
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .hero { padding: 52px 0 40px; }
+      .hero h1 { font-size: clamp(2.4rem, 7vw, 5.8rem); }
+      .persona-card { grid-template-columns: 1fr; }
+      .persona-visual { min-height: 240px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
     }
 
-    @media (max-width: 560px) {
-      .nav {
-        min-height: 62px;
-        padding: 0 14px;
-      }
-      .brand span:last-child {
-        font-size: 1rem;
-      }
-      .nav-actions {
-        gap: 8px;
-      }
-      .btn {
-        min-height: 44px;
-        padding: 0 14px;
-        font-size: 14px;
-      }
-      .hero h1 {
-        font-size: 3rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-      .persona-card {
-        padding: 18px;
-      }
-      .carousel-stage {
-        min-height: 480px;
-      }
+    /* Dark-Mode-Toggle auf der Landing-Page ausblenden */
+    .theme-toggle { display: none !important; }
+
+    @media (max-width: 640px) {
+      .nav { min-height: 58px; padding: 0 16px; border-radius: 16px; }
+      /* "Becoming"-Text ausblenden, nur Logo zeigen — spart ~90px */
+      .brand span:last-child { display: none; }
+      .nav-actions { gap: 8px; }
+      .btn { min-height: 42px; padding: 0 16px; font-size: 14px; border-radius: 13px; }
+      .hero { padding: 36px 0 28px; }
+      .hero h1 { font-size: clamp(2rem, 9vw, 3.2rem); line-height: 1.05; }
+      .hero p { font-size: 0.95rem; margin-top: 14px; }
+      .hero-cta { margin-top: 20px; }
+      .hero-cta .btn-primary { min-height: 48px; padding: 0 20px; font-size: 15px; }
+      .how-section { padding-bottom: 36px; }
+      .carousel-stage { min-height: 420px; }
+      .persona-section { padding-bottom: 44px; }
+      .persona-card { padding: 16px; gap: 14px; }
+      .persona-visual { min-height: 180px; }
+      .persona-content h3 { font-size: clamp(1.4rem, 6vw, 2rem); }
+      .persona-content p { font-size: 0.95rem; }
+      /* Modals */
+      .modal-card { padding: 20px; border-radius: 22px; }
+      .modal-card h3 { font-size: 1.5rem; }
+      .modal-overlay { padding: 12px; }
+      .auth-form input { min-height: 48px; }
+    }
+
+    @media (max-width: 390px) {
+      .nav-actions { gap: 6px; }
+      .btn { padding: 0 12px; font-size: 13px; min-height: 42px; }
+      .hero h1 { font-size: 1.85rem; }
+      .hero p { font-size: 0.9rem; }
+      .carousel-stage { min-height: 380px; }
+      .persona-card { padding: 14px; }
+      .persona-visual { min-height: 160px; }
     }
 
     .modal-overlay {
@@ -434,6 +527,10 @@
 
 .modal-overlay.active {
   display: flex;
+}
+
+.modal-overlay.active .modal-card {
+  animation: cardIn 0.25s cubic-bezier(0.34, 1.26, 0.64, 1);
 }
 
 .modal-card {
@@ -510,4 +607,39 @@
 .auth-submit {
   width: 100%;
   margin-top: 4px;
+}
+
+/* ── Dark Mode ─────────────────────────────────────────────────────────────── */
+html[data-theme="dark"] {
+  --bg: #0d1117;
+  --surface: rgba(255,255,255,0.06);
+  --surface-strong: #1a2336;
+  --text: #eaeef5;
+  --muted: #9eabbe;
+  --line: rgba(255,255,255,0.13);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,0.60);
+  --shadow-md: 0 12px 28px rgba(0,0,0,0.44);
+}
+
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at top left, rgba(91,92,240,0.14), transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(53,195,155,0.08), transparent 24%),
+    #0d1117;
+}
+
+html[data-theme="dark"] .modal-card {
+  background: rgba(16,22,38,0.98);
+  border-color: rgba(255,255,255,0.13);
+}
+
+html[data-theme="dark"] .auth-form input {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.13);
+  color: var(--text);
+}
+
+html[data-theme="dark"] .auth-form input:focus {
+  border-color: rgba(91,92,240,0.50);
+  box-shadow: 0 0 0 4px rgba(91,92,240,0.14);
 }

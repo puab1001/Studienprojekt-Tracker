@@ -3,19 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Becoming — Dashboard</title>
+  <title>Becoming — Heute</title>
+  <script>(function(){const t=localStorage.getItem('becoming_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="/js/supabase-client.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/state.js"></script>
   <script src="/js/common.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script src="/js/components/empty-states.js"></script>
 </head>
 <body>
+  <div id="pageLoader">
+    <div class="container sk-page">
+      <div class="sk-block sk-hero"></div>
+      <div class="sk-card">
+        <div class="sk-block sk-line sk-line--xl" style="margin-bottom:18px;"></div>
+        <div class="sk-block sk-habit"></div>
+        <div class="sk-block sk-habit"></div>
+        <div class="sk-block sk-habit"></div>
+        <div class="sk-block sk-habit"></div>
+        <div class="sk-block sk-habit"></div>
+      </div>
+    </div>
+  </div>
   <header class="site-header">
     <div class="container">
       <nav class="nav">
-        <a href="/logged_in_landing.html" class="brand" aria-label="Becoming Dashboard">
+        <a href="/logged_in_landing.html" class="brand" aria-label="Becoming Heute">
           <span class="brand-mark"></span>
           <span>Becoming</span>
         </a>
@@ -74,9 +96,7 @@
               </div>
             </div>
 
-            <div class="hero-visual">
-              <div class="persona-placeholder">Persona Artwork<br>für The Disciplined</div>
-            </div>
+            <div class="hero-visual"></div>
           </div>
         </article>
 
@@ -156,11 +176,21 @@
         <article class="card">
           <div class="section-head">
             <div>
+              <h3>Reflexion</h3>
+              <div class="section-sub">Kurzer täglicher Check-in</div>
+            </div>
+          </div>
+          <div class="reflection-box" contenteditable="true" data-placeholder="Wie war dein Tag? Was ist dir heute gut gelungen?"></div>
+          <button class="btn-save" id="saveBtn">Speichern</button>
+        </article>
+
+<article class="card">
+          <div class="section-head">
+            <div>
               <h3>Status</h3>
               <div class="section-sub">Kompakter Überblick</div>
             </div>
           </div>
-
           <div class="mini-stats">
             <div class="mini-stat">
               <strong>12</strong>
@@ -175,96 +205,22 @@
               <span>Identity Level</span>
             </div>
             <div class="mini-stat">
-              <strong>Fri</strong>
-              <span>Heutiger Tag</span>
+              <strong>5</strong>
+              <span>Tage Streak</span>
             </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="section-head">
-            <div>
-              <h3>Reflexion</h3>
-              <div class="section-sub">Kurzer täglicher Check-in</div>
-            </div>
-          </div>
-
-          <div class="reflection-box" contenteditable="true" data-placeholder="Wie war dein Tag? Was ist dir heute gut gelungen?"></div>
-          <button class="btn-save" id="saveBtn">Speichern</button>
-        </article>
-
-        <article class="card">
-          <div class="section-head">
-            <div>
-              <h3>Schnellaktionen</h3>
-            </div>
-          </div>
-
-          <div class="action-list">
-            <button class="action-btn" id="openPersonaModal" type="button">
-
-            <span>Persona wechseln</span><span>→</span>
-
-          </button>
-            <a class="action-btn" href="/weekly.html">
-
-            <span>Wochenauswertung ansehen</span><span>→</span>
-
-          </a>
-
-          <a class="action-btn" href="/tagebuch.html">
-
-            <span>Zum Tagebuch</span><span>→</span>
-
-          </a>
           </div>
         </article>
       </aside>
     </div>
   </main>
-</body>
 
-<div class="persona-modal-overlay" id="personaModal" aria-hidden="true">
-  <div class="persona-modal-card">
-    <button class="persona-modal-close" id="closePersonaModal" type="button" aria-label="Schließen">×</button>
-    <h3>Persona wechseln</h3>
-    <p>Wähle die Persona, mit der du heute weitermachen möchtest.</p>
-
-    <div class="persona-modal-body">
-      <div class="persona-grid" id="activePersonaGrid">
-        <button class="persona-option" type="button" data-persona="disciplined">
-          <div class="persona-option-visual" style="background: var(--disciplined);"></div>
-          <h4>The Disciplined</h4>
-          <p>Selbstkontrolle, Routine und Stabilität.</p>
-        </button>
-
-        <button class="persona-option" type="button" data-persona="curious">
-          <div class="persona-option-visual" style="background: var(--curious);"></div>
-          <h4>The Curious</h4>
-          <p>Lernen, Offenheit und Entwicklung.</p>
-        </button>
-
-        <button class="persona-option" type="button" data-persona="connected">
-          <div class="persona-option-visual" style="background: var(--connected);"></div>
-          <h4>The Connected</h4>
-          <p>Empathie und Beziehungen.</p>
-        </button>
-
-        <button class="persona-option" type="button" data-persona="resilient">
-          <div class="persona-option-visual" style="background: var(--resilient);"></div>
-          <h4>The Resilient</h4>
-          <p>Erholung, Anpassung und Durchhaltevermögen.</p>
-        </button>
-
-        <button class="persona-option" type="button" data-persona="intentional">
-          <div class="persona-option-visual" style="background: var(--intentional);"></div>
-          <h4>The Intentional</h4>
-          <p>Fokus, Klarheit und bewusste Entscheidungen.</p>
-        </button>
-      </div>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>Becoming — Persona-basierte Habit-Tracking-Webanwendung</div>
+      <div style="color:var(--muted);font-size:13px;">© 2026 · Studienprojekt</div>
     </div>
-  </div>
-</div>
+  </footer>
 
 <script src="js/dashboard.js"></script>
+</body>
 </html>

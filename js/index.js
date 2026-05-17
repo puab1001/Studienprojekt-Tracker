@@ -1,17 +1,20 @@
 // ─── BECOMING · index.js ─────────────────────────────────────────────────────
 // Landing Page: Modals, Carousel, Login, Registrierung
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-  // Falls bereits eingeloggt → direkt zum Hub
-  if (getUser()) {
+  // Falls bereits eingeloggt → direkt zu Heute
+  const { data: { session } } = await db.auth.getSession();
+  if (session) {
     window.location.href = '/logged_in_landing.html';
     return;
   }
 
+  _setupThemeToggle();
   initModals();
   initCarousel();
   initAuthForms();
+  initPasswordToggles();
 
 });
 
@@ -26,7 +29,6 @@ function initModals() {
   openLogin?.addEventListener('click', () => openModal(loginModal));
   openRegister?.addEventListener('click', () => openModal(registerModal));
 
-  // Schließen-Buttons (data-close Attribut)
   document.querySelectorAll('.modal-close').forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.dataset.close;
@@ -34,15 +36,13 @@ function initModals() {
     });
   });
 
-  // Klick außerhalb schließt Modal
   [loginModal, registerModal].forEach(modal => {
-    modal?.addEventListener('click', (e) => {
+    modal?.addEventListener('click', e => {
       if (e.target === modal) closeModal(modal);
     });
   });
 
-  // ESC-Taste
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeModal(loginModal);
       closeModal(registerModal);
@@ -54,7 +54,6 @@ function openModal(modal) {
   if (!modal) return;
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
-  // Erstes Input fokussieren
   setTimeout(() => modal.querySelector('input')?.focus(), 50);
 }
 
@@ -75,11 +74,10 @@ function initLoginForm() {
   const modal = document.getElementById('loginModal');
   if (!modal) return;
 
-  // Den "Anmelden"-Link durch einen echten Submit-Button ersetzen (funktional)
   const submitLink = modal.querySelector('.auth-submit');
   if (!submitLink) return;
 
-  submitLink.addEventListener('click', (e) => {
+  submitLink.addEventListener('click', async e => {
     e.preventDefault();
     const email    = modal.querySelector('input[type="email"]')?.value.trim();
     const password = modal.querySelector('input[type="password"]')?.value;
@@ -89,21 +87,19 @@ function initLoginForm() {
       return;
     }
 
-    // Gespeicherte User prüfen
-    const users = getStoredUsers();
-    const user  = users.find(u => u.email === email);
+    submitLink.textContent = 'Wird angemeldet…';
+    submitLink.style.opacity = '0.6';
 
-    if (!user) {
-      showFormError(modal, 'Kein Konto mit dieser E-Mail gefunden.');
+    const { error } = await db.auth.signInWithPassword({ email, password });
+
+    submitLink.textContent = 'Anmelden';
+    submitLink.style.opacity = '';
+
+    if (error) {
+      showFormError(modal, 'E-Mail oder Passwort falsch.');
       return;
     }
-    if (user.password !== btoa(password)) {
-      showFormError(modal, 'Falsches Passwort.');
-      return;
-    }
 
-    // Login erfolgreich
-    saveUser({ name: user.name, email: user.email });
     window.location.href = '/logged_in_landing.html';
   });
 }
@@ -115,7 +111,7 @@ function initRegisterForm() {
   const submitBtn = modal.querySelector('.auth-submit');
   if (!submitBtn) return;
 
-  submitBtn.addEventListener('click', (e) => {
+  submitBtn.addEventListener('click', async e => {
     e.preventDefault();
 
     const name     = modal.querySelector('input[type="text"]')?.value.trim();
@@ -131,44 +127,54 @@ function initRegisterForm() {
       return;
     }
 
-    const users = getStoredUsers();
-    if (users.find(u => u.email === email)) {
-      showFormError(modal, 'Diese E-Mail ist bereits registriert.');
+    submitBtn.textContent = 'Konto wird erstellt…';
+    submitBtn.style.opacity = '0.6';
+
+    const { data, error } = await db.auth.signUp({ email, password });
+
+    submitBtn.textContent = 'Registrieren';
+    submitBtn.style.opacity = '';
+
+    if (error) {
+      const msg = error.message.toLowerCase().includes('already')
+        ? 'Diese E-Mail ist bereits registriert.'
+        : error.message;
+      showFormError(modal, msg);
       return;
     }
 
-    // User speichern
-    users.push({ name, email, password: btoa(password) });
-    localStorage.setItem('becoming_users', JSON.stringify(users));
+    const userId = data.user.id;
+    await initNewUser(userId, name);
 
-    // Direkt einloggen
-    saveUser({ name, email });
-
-    // Erste Persona freischalten
-    localStorage.setItem('becoming_personas', JSON.stringify(['disciplined']));
-    setActivePersona('disciplined');
-
+    localStorage.setItem('becoming_show_onboarding', 'true');
     window.location.href = '/logged_in_landing.html';
   });
 }
 
-function getStoredUsers() {
-  try {
-    return JSON.parse(localStorage.getItem('becoming_users')) || [];
-  } catch { return []; }
-}
-
 function showFormError(modal, message) {
-  // Alten Fehler entfernen
   modal.querySelector('.form-error')?.remove();
 
   const err = document.createElement('div');
   err.className = 'form-error';
-  err.style.cssText = 'color:#ef4444; font-size:13px; font-weight:600; padding:10px 14px; background:rgba(239,68,68,0.08); border-radius:12px; border:1px solid rgba(239,68,68,0.2);';
+  err.style.cssText = 'color:#ef4444;font-size:13px;font-weight:600;padding:10px 14px;background:rgba(239,68,68,0.08);border-radius:12px;border:1px solid rgba(239,68,68,0.2);';
   err.textContent = message;
 
   const form = modal.querySelector('.auth-form');
   form?.insertBefore(err, form.firstChild);
+}
+
+// ─── Passwort-Toggle ─────────────────────────────────────────────────────────
+
+function initPasswordToggles() {
+  document.querySelectorAll('.pw-toggle').forEach(btn => {
+    btn.addEventListener('mousedown', e => e.preventDefault());
+    btn.addEventListener('click', () => {
+      const input = btn.closest('.input-wrap').querySelector('input');
+      const isVisible = input.type === 'text';
+      input.type = isVisible ? 'password' : 'text';
+      btn.textContent = isVisible ? 'Anzeigen' : 'Verbergen';
+    });
+  });
 }
 
 // ─── Carousel ────────────────────────────────────────────────────────────────
@@ -188,30 +194,18 @@ function initCarousel() {
   function goTo(index) {
     slides[current].classList.remove('active');
     dots[current]?.classList.remove('active');
-
     current = (index + slides.length) % slides.length;
-
     slides[current].classList.add('active');
     dots[current]?.classList.add('active');
   }
 
-  function startAuto() {
-    autoTimer = setInterval(() => goTo(current + 1), 4500);
-  }
-
-  function resetAuto() {
-    clearInterval(autoTimer);
-    startAuto();
-  }
+  function startAuto() { autoTimer = setInterval(() => goTo(current + 1), 4500); }
+  function resetAuto()  { clearInterval(autoTimer); startAuto(); }
 
   prevBtn?.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
   nextBtn?.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { goTo(i); resetAuto(); }));
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { goTo(i); resetAuto(); });
-  });
-
-  // Touch-Swipe
   let touchStartX = 0;
   stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
   stage.addEventListener('touchend', e => {

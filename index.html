@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Becoming — Landing Page</title>
+    <script>(function(){const t=localStorage.getItem('becoming_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -50,6 +51,30 @@
           </p>
           <div class="hero-cta">
             <a href="#personas" class="btn btn-primary">Starte heute</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section">
+        <div class="container">
+          <div class="steps-card">
+            <div class="step">
+              <div class="step-num">01</div>
+              <h3>Persona wählen</h3>
+              <p>Wähle eine von fünf Personas, die zu deiner aktuellen Entwicklungsrichtung passt.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">02</div>
+              <h3>Täglich tracken</h3>
+              <p>Hake deine täglichen Habits ab und baue Schritt für Schritt Gewohnheiten auf.</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+              <div class="step-num">03</div>
+              <h3>Wachstum erleben</h3>
+              <p>Verfolge deinen Fortschritt, baue Streaks auf und entwickle deine Identität weiter.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -186,6 +211,7 @@
     <footer class="footer">
       <div class="container footer-inner">
         <div>Becoming — Persona-basierte Habit-Tracking-Webanwendung</div>
+        <div style="color:var(--muted);font-size:13px;">© 2026 · Studienprojekt</div>
       </div>
     </footer>
 
@@ -210,12 +236,15 @@
 
           <label>
             <span>Passwort</span>
-            <input type="password" placeholder="••••••••" />
+            <div class="input-wrap">
+              <input type="password" placeholder="••••••••" />
+              <button type="button" class="pw-toggle" tabindex="-1">Anzeigen</button>
+            </div>
           </label>
 
-          <a href="/logged_in_landing.html" class="btn btn-primary auth-submit">
+          <button type="submit" class="btn btn-primary auth-submit">
             Anmelden
-          </a>
+          </button>
         </form>
       </div>
     </div>
@@ -246,7 +275,10 @@
 
           <label>
             <span>Passwort</span>
-            <input type="password" placeholder="••••••••" />
+            <div class="input-wrap">
+              <input type="password" placeholder="••••••••" />
+              <button type="button" class="pw-toggle" tabindex="-1">Anzeigen</button>
+            </div>
           </label>
 
           <button type="submit" class="btn btn-primary auth-submit">
@@ -255,6 +287,9 @@
         </form>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/db.js"></script>
     <script src="js/common.js"></script>
     <script src="js/index.js"></script>
   </body>

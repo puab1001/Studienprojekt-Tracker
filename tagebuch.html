@@ -4,14 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Becoming — Tagebuch</title>
+  <script>(function(){const t=localStorage.getItem('becoming_theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})();</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css" />
-  <link rel="stylesheet" href="css/journal.css">
+  <link rel="stylesheet" href="css/tagebuch.css">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="/js/supabase-client.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/state.js"></script>
   <script src="/js/common.js"></script>
+  <script src="/js/components/toast.js"></script>
+  <script src="/js/components/empty-states.js"></script>
 </head>
 <body>
+  <div id="pageLoader">
+    <div class="loader-brand">
+      <div class="brand-mark"></div>
+      Becoming
+    </div>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
+  </div>
+
   <header class="site-header">
     <div class="container">
       <nav class="nav">
@@ -19,24 +35,16 @@
           <span class="brand-mark"></span>
           <span>Becoming</span>
         </a>
-
         <div class="nav-right">
           <div class="user-menu">
-
             <button class="user-chip" id="userMenuToggle" type="button">
-
               <span class="avatar">MK</span>
-
               <span>Willkommen zurück</span>
-
             </button>
-
             <div class="user-dropdown" id="userDropdown">
-
+              <a href="/dashboard.html" class="dropdown-item">Heute</a>
               <a href="/index.html" class="dropdown-item">Ausloggen</a>
-
             </div>
-
           </div>
         </div>
       </nav>
@@ -44,24 +52,33 @@
   </header>
 
   <main class="page">
-    <div class="container">
-      <section class="stack">
-        <article class="card intro">
-          <h1>Dein Tagebuch</h1>
-          <p>
-            Sieh dir an, was du an einzelnen Tagen geschafft hast, wie du reflektiert hast und wie sich daraus deine Wochenentwicklung zusammensetzt.
-          </p>
-          <div class="year-nav">
-            <button type="button" id="yearPrev">←</button>
-            <span id="currentYear">2026</span>
-            <button type="button" id="yearNext">→</button>
-          </div>
-        </article>
+    <div class="container tagebuch-grid">
+      <article class="card tb-hero" id="tbHero">
+        <h1>Dein Tagebuch</h1>
+        <p>Alle deine Aktivitäten und Reflexionen – Woche für Woche.</p>
+      </article>
 
-        <div id="journalContent"></div>
-      </section>
+      <article class="card">
+        <div class="tb-week-nav">
+          <button class="tb-week-btn" id="tbPrevWeek" type="button" aria-label="Vorherige Woche">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="tb-week-label" id="tbWeekLabel">Wird geladen…</div>
+          <button class="tb-week-btn" id="tbNextWeek" type="button" aria-label="Nächste Woche" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+        <div id="tbPersonaAccordions"></div>
+      </article>
     </div>
   </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>Becoming — Persona-basierte Habit-Tracking-Webanwendung</div>
+      <div style="color:var(--muted);font-size:13px;">© 2026 · Studienprojekt</div>
+    </div>
+  </footer>
 
   <script src="js/tagebuch.js"></script>
 </body>

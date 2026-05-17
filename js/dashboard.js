@@ -1,84 +1,108 @@
 // ─── BECOMING · dashboard.js ─────────────────────────────────────────────────
-// Habit-Checkboxen, Fortschritt, XP, Streak, Persona-Modal, Reflexion
-
-// Habit-Definitionen pro Persona
-const PERSONA_HABITS = {
-  disciplined: [
-    { id: 'dh1', title: '30 Minuten Deep Work',            desc: 'Arbeite konzentriert an einer Aufgabe ohne Ablenkung.',          tag: 'Fokus' },
-    { id: 'dh2', title: 'Kein Social Media bis 12 Uhr',    desc: 'Trainiere bewussten Verzicht und reduziere Reizüberflutung.',    tag: 'Selbstkontrolle' },
-    { id: 'dh3', title: 'Morgens dieselbe Routine einhalten', desc: 'Stärke Konstanz durch wiederholbare, einfache Abläufe.',      tag: 'Routine' },
-    { id: 'dh4', title: '10 Minuten bewusste Planung',     desc: 'Lege fest, was heute wichtig ist und was bewusst wegfällt.',    tag: 'Klarheit' },
-    { id: 'dh5', title: 'Kurze Abendreflexion',            desc: 'Was hat heute gut funktioniert und wo warst du konsequent?',    tag: 'Reflexion' },
-  ],
-  curious: [
-    { id: 'ch1', title: '20 Minuten lesen',                desc: 'Lies täglich – Bücher, Artikel oder Essays.',                   tag: 'Wissen' },
-    { id: 'ch2', title: 'Eine neue Frage notieren',        desc: 'Halte etwas fest, das dich heute interessiert hat.',             tag: 'Neugier' },
-    { id: 'ch3', title: 'Etwas Neues ausprobieren',        desc: 'Mach etwas, das du noch nie gemacht hast – klein ist okay.',    tag: 'Offenheit' },
-    { id: 'ch4', title: 'Podcast oder Vortrag hören',      desc: 'Nutze Wege und Wartezeiten für Lernimpulse.',                   tag: 'Lernen' },
-  ],
-  resilient: [
-    { id: 'rh1', title: '10 Minuten Meditation',           desc: 'Komm zur Ruhe und beobachte deine Gedanken ohne Bewertung.',    tag: 'Erholung' },
-    { id: 'rh2', title: 'Bewegung – 20 Minuten',           desc: 'Körperliche Aktivität stärkt mentale Widerstandskraft.',        tag: 'Körper' },
-    { id: 'rh3', title: 'Stresssituation bewusst durchatmen', desc: 'Erkenne einen Stressmoment und reagiere ruhig darauf.',      tag: 'Anpassung' },
-    { id: 'rh4', title: 'Ausreichend schlafen (7–8h)',     desc: 'Schlaf ist die Basis für Resilienz und Regeneration.',          tag: 'Schlaf' },
-  ],
-  intentional: [
-    { id: 'ih1', title: 'Top-3-Aufgaben festlegen',        desc: 'Starte den Tag mit klaren Prioritäten.',                        tag: 'Fokus' },
-    { id: 'ih2', title: 'Handy beim Arbeiten weglegen',    desc: 'Schaffe Bedingungen für echten Fokus.',                         tag: 'Klarheit' },
-    { id: 'ih3', title: 'Bewusste Entscheidung treffen',   desc: 'Triff heute eine Entscheidung die du sonst aufgeschoben hättest.', tag: 'Intention' },
-    { id: 'ih4', title: 'Tagesende definieren',            desc: 'Lege fest, wann der Arbeitstag offiziell endet.',               tag: 'Grenzen' },
-  ],
-  connected: [
-    { id: 'coh1', title: 'Aktiv zuhören im Gespräch',      desc: 'Sei voll präsent – kein Handy, kein Unterbrechen.',             tag: 'Präsenz' },
-    { id: 'coh2', title: 'Jemandem bewusst danken',        desc: 'Drücke echte Wertschätzung aus.',                               tag: 'Dankbarkeit' },
-    { id: 'coh3', title: 'Nachricht an jemanden schicken', desc: 'Melde dich bei jemandem, an den du heute gedacht hast.',        tag: 'Verbindung' },
-    { id: 'coh4', title: 'Ohne Ablenkung Zeit mit Menschen', desc: 'Qualitätszeit – kein Bildschirm, volle Aufmerksamkeit.',      tag: 'Empathie' },
-  ],
-};
+// Habit-Checkboxen, Fortschritt, Level-System, Reflexion, Custom Habits
 
 const PERSONA_META = {
-  disciplined: { label: 'The Disciplined', quote: 'Konstanz schlägt Motivation.',       sub: 'Heute liegt dein Fokus auf Selbstkontrolle, Routine und bewussten Entscheidungen.' },
-  curious:     { label: 'The Curious',     quote: 'Neugier öffnet Türen.',              sub: 'Heute liegt dein Fokus auf Lernen, Offenheit und geistiger Bewegung.' },
-  resilient:   { label: 'The Resilient',   quote: 'Erholung ist auch Leistung.',        sub: 'Heute liegt dein Fokus auf Regeneration, Anpassung und innerem Gleichgewicht.' },
-  intentional: { label: 'The Intentional', quote: 'Weniger, aber richtiger.',           sub: 'Heute liegt dein Fokus auf klaren Prioritäten und bewussten Entscheidungen.' },
-  connected:   { label: 'The Connected',   quote: 'Echte Verbindung braucht Präsenz.',  sub: 'Heute liegt dein Fokus auf Empathie, Zuhören und menschlicher Nähe.' },
+  disciplined: {
+    label: 'The Disciplined',
+    quote: 'Konstanz schlägt Motivation.',
+    subs: [
+      'Heute liegt dein Fokus auf Selbstkontrolle, Routine und bewussten Entscheidungen.',
+      'Du hast die Grundlagen gemeistert. Jetzt geht es um echte Disziplin.',
+      'Meisterschaft: Disziplin auf höchstem Niveau – kein Kompromiss.',
+    ],
+  },
+  curious: {
+    label: 'The Curious',
+    quote: 'Neugier öffnet Türen.',
+    subs: [
+      'Heute liegt dein Fokus auf Lernen, Offenheit und geistiger Bewegung.',
+      'Tieferes Lernen: Nicht nur konsumieren, sondern reflektieren und verknüpfen.',
+      'Wissensmeisterschaft: Erkenntnisse aktiv weitergeben und anwenden.',
+    ],
+  },
+  resilient: {
+    label: 'The Resilient',
+    quote: 'Erholung ist auch Leistung.',
+    subs: [
+      'Heute liegt dein Fokus auf Regeneration, Anpassung und innerem Gleichgewicht.',
+      'Tiefere Resilienz: Proaktiver Umgang mit Stress und Erschöpfung.',
+      'Meisterschaft: Körper und Geist auf höchstem Level trainieren.',
+    ],
+  },
+  intentional: {
+    label: 'The Intentional',
+    quote: 'Weniger, aber richtiger.',
+    subs: [
+      'Heute liegt dein Fokus auf klaren Prioritäten und bewussten Entscheidungen.',
+      'Erweiterte Intentionalität: Struktur und Fokus auf einem neuen Level.',
+      'Meisterschaft: Vollständige Kontrolle über Energie und Aufmerksamkeit.',
+    ],
+  },
+  connected: {
+    label: 'The Connected',
+    quote: 'Echte Verbindung braucht Präsenz.',
+    subs: [
+      'Heute liegt dein Fokus auf Empathie, Zuhören und menschlicher Nähe.',
+      'Tiefere Verbindung: Nicht nur präsent sein, sondern aktiv investieren.',
+      'Meisterschaft: Beziehungen auf tiefster Ebene pflegen und stärken.',
+    ],
+  },
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+// Inline SVG icons for custom habit action buttons
+const _SVG_EDIT = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+const _SVG_TRASH = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+const _SVG_PLUS = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+
+// ─── Seiten-Start ─────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const ok = await initPage();
+  if (!ok) return;
 
   const persona = getActivePersona();
   renderPersonaHeader(persona);
   renderHabits(persona);
   renderStats();
   initReflection();
-  initPersonaModal();
-  initSaveBtn();
 
 });
 
 // ─── Persona-Header ───────────────────────────────────────────────────────────
 
 function renderPersonaHeader(persona) {
-  const meta = PERSONA_META[persona];
-  if (!meta) return;
+  const level = getPersonaLevel(persona);
+
+  let label, quote, sub;
+  if (isDefaultPersona(persona)) {
+    const meta = PERSONA_META[persona];
+    if (!meta) return;
+    label = meta.label;
+    quote = meta.quote;
+    sub   = meta.subs[level - 1] || meta.subs[0];
+  } else {
+    label = getPersonaDisplayName(persona) || 'Eigene Persona';
+    quote = 'Dein eigener Weg.';
+    sub   = getPersonaDisplayDesc(persona) || 'Verfolge deine eigenen Gewohnheiten und baue deine individuelle Persona auf.';
+  }
 
   const eyebrow = document.querySelector('.eyebrow');
   const h1      = document.querySelector('.hero-copy h1');
   const subP    = document.querySelector('.hero-copy > p');
 
-  if (eyebrow) eyebrow.textContent = meta.label;
-  if (h1)      h1.textContent      = meta.quote;
-  if (subP)    subP.textContent    = meta.sub;
+  if (eyebrow) eyebrow.textContent = `${label} · Level ${level}`;
+  if (h1)      h1.textContent      = quote;
+  if (subP)    subP.textContent    = sub;
 
-  // Hero-Farbe anpassen
+  const color = getPersonaColor(persona);
   const heroWrap = document.querySelector('.hero-copy-wrap');
-  if (heroWrap) heroWrap.style.background = `var(--${persona})`;
+  if (heroWrap) heroWrap.style.background = color;
 
-  // Persona-Artwork rendern
   const heroVisual = document.querySelector('.hero-visual');
   if (heroVisual) {
-    heroVisual.style.background = `var(--${persona})`;
-    const initial = meta.label.replace('The ', '')[0];
+    heroVisual.style.background = color;
+    const initial = label.replace('The ', '')[0];
     heroVisual.innerHTML = `
       <div class="persona-art">
         <div class="art-orb art-orb--1"></div>
@@ -89,76 +113,187 @@ function renderPersonaHeader(persona) {
     `;
   }
 
-  // Stats
   renderHeroStats(persona);
+}
+
+function _animateUpdate(el, newText) {
+  if (!el || el.textContent === newText) return;
+  el.textContent = newText;
+  el.classList.remove('value-updated');
+  void el.offsetWidth; // reflow to restart animation
+  el.classList.add('value-updated');
+  el.addEventListener('animationend', () => el.classList.remove('value-updated'), { once: true });
 }
 
 function renderHeroStats(persona) {
   const stats   = calcStats(persona);
   const statEls = document.querySelectorAll('.hero-stat strong');
   if (statEls.length >= 3) {
-    statEls[0].textContent = `Level ${String(stats.level).padStart(2, '0')}`;
-    statEls[1].textContent = `${stats.streak} ${stats.streak === 1 ? 'Tag' : 'Tage'}`;
-    statEls[2].textContent = `${stats.weeklyXP} XP`;
+    _animateUpdate(statEls[0], `Level ${String(stats.level).padStart(2, '0')}`);
+    _animateUpdate(statEls[1], `${stats.streak} ${stats.streak === 1 ? 'Tag' : 'Tage'}`);
+    _animateUpdate(statEls[2], `${stats.weeklyXP} XP`);
   }
 }
 
 // ─── Habits rendern ───────────────────────────────────────────────────────────
 
+const _SVG_CHECK_PATH = `<svg class="habit-check-svg" viewBox="0 0 22 22" aria-hidden="true"><path class="check-path" d="M5 11l4.5 4.5L17 7" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function renderHabitItem(h, todayDone) {
+  const checked = todayDone.includes(h.id) ? 'checked' : '';
+  const title   = escapeHtml(h.title);
+  const desc    = escapeHtml(h.desc);
+  const tag     = escapeHtml(h.tag);
+  if (h.isCustom) {
+    return `
+      <label class="habit-item habit-item--custom">
+        <div class="habit-check-wrap">
+          <input class="habit-check" type="checkbox" data-id="${h.id}" ${checked}>
+          ${_SVG_CHECK_PATH}
+        </div>
+        <div>
+          <div class="habit-title">${title} <span class="habit-badge-custom">Eigen</span></div>
+          <div class="habit-desc">${desc || ''}</div>
+        </div>
+        <span class="habit-tag">${tag || ''}</span>
+        <div class="habit-actions">
+          <button class="habit-action-btn" type="button" data-action="edit" data-id="${h.id}" aria-label="Bearbeiten">${_SVG_EDIT}</button>
+          <button class="habit-action-btn habit-action-btn--delete" type="button" data-action="delete" data-id="${h.id}" aria-label="Löschen">${_SVG_TRASH}</button>
+        </div>
+      </label>
+    `;
+  }
+  return `
+    <label class="habit-item">
+      <div class="habit-check-wrap">
+        <input class="habit-check" type="checkbox" data-id="${h.id}" ${checked}>
+        ${_SVG_CHECK_PATH}
+      </div>
+      <div>
+        <div class="habit-title">${title}</div>
+        <div class="habit-desc">${desc}</div>
+      </div>
+      <span class="habit-tag">${tag}</span>
+    </label>
+  `;
+}
+
+function renderAddHabitButton(persona) {
+  if (isDefaultPersona(persona)) return '';
+  const count   = getCustomHabitCount(persona);
+  if (count >= 10) {
+    return `<div class="add-habit-limit">Maximale Anzahl eigener Habits (10) erreicht.</div>`;
+  }
+  return `<button class="add-habit-btn" type="button" id="addCustomHabitBtn">${_SVG_PLUS} Eigene Habit hinzufügen</button>`;
+}
+
 function renderHabits(persona) {
-  const habits    = PERSONA_HABITS[persona] || [];
+  const habits    = getHabitsForPersona(persona);
   const todayKey  = getTodayKey();
-  const habitData = getHabitData();
-  const todayDone = habitData[todayKey]?.[persona] || [];
+  const todayDone = getCompletionsForDay(persona, todayKey);
 
   const container = document.querySelector('.habits');
   if (!container) return;
 
-  container.innerHTML = habits.map(h => `
-    <label class="habit-item">
-      <input class="habit-check" type="checkbox" data-id="${h.id}" ${todayDone.includes(h.id) ? 'checked' : ''}>
-      <div>
-        <div class="habit-title">${h.title}</div>
-        <div class="habit-desc">${h.desc}</div>
-      </div>
-      <span class="habit-tag">${h.tag}</span>
-    </label>
-  `).join('');
+  const level = getPersonaLevel(persona);
+  const levelLabel = level === 3 ? 'Max Level' : `Level ${level}`;
 
-  // Event-Listener
+  if (habits.length === 0) {
+    container.innerHTML = `
+      <div class="level-badge-row">
+        <span class="level-badge level-badge--${persona}">${levelLabel}</span>
+      </div>
+    `;
+    if (typeof renderDashboardEmptyState === 'function') {
+      const emptyWrap = document.createElement('div');
+      container.appendChild(emptyWrap);
+      renderDashboardEmptyState(emptyWrap, persona, level, () => showCustomHabitModal(persona));
+    } else {
+      container.innerHTML += renderAddHabitButton(persona);
+    }
+    document.getElementById('addCustomHabitBtn')?.addEventListener('click', () => showCustomHabitModal(persona));
+    updateProgress(persona);
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="level-badge-row">
+      <span class="level-badge level-badge--${persona}">${levelLabel}</span>
+      ${level < 3 ? `<span class="level-hint">7 Tage alle Habits → Level ${level + 1}</span>` : '<span class="level-hint">Du hast das Maximum erreicht!</span>'}
+    </div>
+    ${habits.map(h => renderHabitItem(h, todayDone)).join('')}
+    ${renderAddHabitButton(persona)}
+  `;
+
   container.querySelectorAll('.habit-check').forEach(cb => {
-    cb.addEventListener('change', () => onHabitChange(persona));
+    cb.addEventListener('change', () => {
+      const habitId    = cb.dataset.id;
+      const isChecked  = cb.checked;
+      wrappedToggleHabit(
+        habitId, persona, todayKey, isChecked,
+        () => onHabitChange(persona).catch(err => console.error('onHabitChange error:', err)),
+        () => {
+          cb.checked = !isChecked;
+          updateProgress(persona);
+          renderHeroStats(persona);
+          renderStats();
+          showToast('Konnte nicht speichern, bitte erneut versuchen.', 'error');
+        }
+      );
+    });
+  });
+
+  container.querySelectorAll('.habit-action-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const habitId = btn.dataset.id;
+      if (btn.dataset.action === 'edit') {
+        const habit = getHabitsForPersona(persona).find(h => h.id === habitId);
+        if (habit) showCustomHabitModal(persona, habit);
+      } else if (btn.dataset.action === 'delete') {
+        confirmDeleteCustomHabit(habitId, persona);
+      }
+    });
+  });
+
+  document.getElementById('addCustomHabitBtn')?.addEventListener('click', () => {
+    showCustomHabitModal(persona);
   });
 
   updateProgress(persona);
 }
 
-function onHabitChange(persona) {
-  const habits   = PERSONA_HABITS[persona] || [];
+async function onHabitChange(persona) {
+  const habits   = getHabitsForPersona(persona);
   const todayKey = getTodayKey();
-  const checked  = [...document.querySelectorAll('.habit-check:checked')].map(c => c.dataset.id);
-
-  const data = getHabitData();
-  if (!data[todayKey]) data[todayKey] = {};
-  data[todayKey][persona] = checked;
-  saveHabitData(data);
+  const done     = getCompletionsForDay(persona, todayKey);
 
   updateProgress(persona);
   renderHeroStats(persona);
   renderStats();
 
-  // Toast wenn alle Habits erledigt
-  if (checked.length === habits.length && habits.length > 0) {
-    showToast('Alle Habits erledigt — starker Tag!');
+  if (done.length === habits.length && habits.length > 0) {
+    showToast('Alle Habits erledigt — starker Tag!', 'success');
+
+    const leveled = await checkAndLevelUp(persona, habits.length);
+    if (leveled) {
+      const newLevel = getPersonaLevel(persona);
+      showLevelUpCelebration(persona, newLevel, PERSONA_META[persona].label);
+      setTimeout(() => {
+        renderPersonaHeader(persona);
+        renderHabits(persona);
+      }, 500);
+    }
   }
 }
 
 // ─── Fortschrittsbalken ───────────────────────────────────────────────────────
 
 function updateProgress(persona) {
-  const habits   = PERSONA_HABITS[persona] || [];
+  const habits   = getHabitsForPersona(persona);
   const todayKey = getTodayKey();
-  const done     = getHabitData()[todayKey]?.[persona]?.length || 0;
+  const done     = getCompletionsForDay(persona, todayKey).length;
   const total    = habits.length;
   const pct      = total ? Math.round((done / total) * 100) : 0;
 
@@ -169,9 +304,16 @@ function updateProgress(persona) {
   if (meta[0]) meta[0].textContent = `${pct}% Tagesfortschritt`;
   if (meta[1]) meta[1].textContent = `${done} von ${total} erledigt`;
 
-  // Section-Sub
   const sub = document.querySelector('.progress-card .section-sub');
   if (sub) sub.textContent = `${done} von ${total} täglichen Habits abgeschlossen`;
+
+  const progressCard = document.querySelector('.progress-card');
+  if (progressCard) {
+    const isComplete = done === total && total > 0;
+    progressCard.classList.toggle('progress-card--complete', isComplete);
+    const h2 = progressCard.querySelector('h2');
+    if (h2) h2.textContent = isComplete ? 'Perfekter Tag! Alle Habits erledigt.' : 'Dein Fortschritt heute';
+  }
 }
 
 // ─── Mini-Stats ───────────────────────────────────────────────────────────────
@@ -180,9 +322,9 @@ function renderStats() {
   const persona  = getActivePersona();
   const stats    = calcStats(persona);
   const statEls  = document.querySelectorAll('.mini-stat strong');
-  const today    = new Date().toLocaleDateString('de-DE', { weekday: 'short' });
+  const today    = new Date().toLocaleDateString('de-DE', { day: 'numeric', month: 'short' });
 
-  if (statEls[0]) statEls[0].textContent = String(PERSONA_HABITS[persona]?.length || 0).padStart(2, '0');
+  if (statEls[0]) statEls[0].textContent = String(getHabitsForPersona(persona).length).padStart(2, '0');
   if (statEls[1]) statEls[1].textContent = `${stats.weekRate}%`;
   if (statEls[2]) statEls[2].textContent = String(stats.level).padStart(2, '0');
   if (statEls[3]) statEls[3].textContent = today;
@@ -191,50 +333,281 @@ function renderStats() {
 // ─── Statistik-Berechnungen ───────────────────────────────────────────────────
 
 function calcStats(persona) {
-  const data    = getHabitData();
-  const habits  = PERSONA_HABITS[persona] || [];
-  const total   = habits.length;
+  const data   = getHabitData();
+  const total  = getHabitCountForPersona(persona);
+  const level  = getPersonaLevel(persona);
 
-  // Streak berechnen
   let streak = 0;
   const today = new Date();
   for (let i = 0; i < 30; i++) {
     const d   = new Date(today);
     d.setDate(d.getDate() - i);
-    const key = d.toISOString().split('T')[0];
-    const done = data[key]?.[persona]?.length || 0;
-    if (done > 0) streak++;
-    else if (i > 0) break; // Lücke → Streak unterbrochen
+    const key = localISODate(d);
+    if ((data[key]?.[persona]?.length || 0) > 0) streak++;
+    else if (i > 0) break;
   }
 
-  // Wochentage (Mo–So)
   const weekDays = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
-    weekDays.push(d.toISOString().split('T')[0]);
+    weekDays.push(localISODate(d));
   }
 
   let weekDone = 0, weekPossible = 0, weeklyXP = 0;
   weekDays.forEach(key => {
-    const done = data[key]?.[persona]?.length || 0;
-    weekDone      += done;
-    weekPossible  += total;
-    weeklyXP      += done * 10; // 10 XP pro Habit
+    const done    = data[key]?.[persona]?.length || 0;
+    weekDone     += done;
+    weekPossible += total;
+    weeklyXP     += done * 10;
   });
 
   const weekRate = weekPossible ? Math.round((weekDone / weekPossible) * 100) : 0;
-  const totalXP  = Object.values(data).reduce((sum, day) => {
-    return sum + (day[persona]?.length || 0) * 10;
-  }, 0);
-  const level = Math.floor(totalXP / 100) + 1;
 
-  return { streak, weekRate, weeklyXP, level, totalXP };
+  return { streak, weekRate, weeklyXP, level };
 }
 
-// ─── Reflexion speichern ──────────────────────────────────────────────────────
+// ─── Custom Habit Modal ───────────────────────────────────────────────────────
+
+let _editingHabitId    = null;
+let _editingHabitLevel = null;
+
+function _ensureCustomHabitModal() {
+  if (document.getElementById('customHabitModal')) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'persona-modal-overlay';
+  overlay.id = 'customHabitModal';
+  overlay.setAttribute('aria-hidden', 'true');
+  overlay.innerHTML = `
+    <div class="persona-modal-card custom-habit-modal-card">
+      <button class="persona-modal-close" id="closeCustomHabitModal" type="button" aria-label="Schließen">×</button>
+      <h3 id="customHabitModalTitle">Eigene Habit hinzufügen</h3>
+      <p id="customHabitModalSub" style="margin:0 0 0;color:var(--muted);line-height:1.6;">Erstelle eine Habit, die zu deiner Persona passt.</p>
+
+      <form class="custom-habit-form" id="customHabitForm" novalidate>
+        <div class="chf-field">
+          <label for="chf-title">Titel <span class="chf-required">*</span></label>
+          <input id="chf-title" type="text" placeholder="z.B. Jeden Morgen spazieren gehen" maxlength="80">
+          <div class="field-error" id="chf-title-error"></div>
+        </div>
+
+        <div class="chf-field">
+          <label for="chf-desc">Beschreibung <span class="chf-optional">(optional)</span></label>
+          <textarea id="chf-desc" placeholder="Was genau bedeutet diese Habit für dich?" rows="3" maxlength="300"></textarea>
+          <div class="field-error" id="chf-desc-error"></div>
+        </div>
+
+        <div class="chf-row">
+          <div class="chf-field">
+            <label for="chf-category">Kategorie</label>
+            <input id="chf-category" type="text" placeholder="z.B. Bewegung" maxlength="40">
+          </div>
+          <div class="chf-field">
+            <label for="chf-level">Level</label>
+            <select id="chf-level">
+              <option value="1">Level 1 – Einsteiger</option>
+              <option value="2">Level 2 – Fortgeschritten</option>
+              <option value="3">Level 3 – Meisterschaft</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="chf-field">
+          <label>Schwierigkeit: <strong id="chf-diff-label">3 / 5</strong></label>
+          <div class="chf-slider-wrap">
+            <span class="chf-slider-min">1</span>
+            <input id="chf-difficulty" type="range" min="1" max="5" value="3" class="chf-slider">
+            <span class="chf-slider-max">5</span>
+          </div>
+          <div class="chf-slider-ticks">
+            <span>Leicht</span><span></span><span>Mittel</span><span></span><span>Schwer</span>
+          </div>
+        </div>
+
+        <div class="chf-actions">
+          <button type="button" id="customHabitCancel" class="persona-back">Abbrechen</button>
+          <button type="submit" class="btn-save chf-submit" id="customHabitSubmit">Habit speichern</button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  document.getElementById('closeCustomHabitModal')?.addEventListener('click', hideCustomHabitModal);
+  document.getElementById('customHabitCancel')?.addEventListener('click', hideCustomHabitModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) hideCustomHabitModal(); });
+
+  document.getElementById('chf-difficulty')?.addEventListener('input', function () {
+    document.getElementById('chf-diff-label').textContent = `${this.value} / 5`;
+  });
+}
+
+function showCustomHabitModal(persona, habit = null) {
+  _ensureCustomHabitModal();
+
+  const overlay = document.getElementById('customHabitModal');
+  const form    = document.getElementById('customHabitForm');
+
+  _editingHabitId    = habit?.id    || null;
+  _editingHabitLevel = habit?.level || null;
+
+  // Reset
+  form.reset();
+  document.querySelectorAll('#customHabitModal .field-error').forEach(el => { el.textContent = ''; });
+
+  const titleEl   = document.getElementById('customHabitModalTitle');
+  const subEl     = document.getElementById('customHabitModalSub');
+  const levelSel  = document.getElementById('chf-level');
+  const submitBtn = document.getElementById('customHabitSubmit');
+
+  if (habit) {
+    titleEl.textContent  = 'Habit bearbeiten';
+    subEl.textContent    = 'Ändere die Details deiner eigenen Habit.';
+    submitBtn.textContent = 'Änderungen speichern';
+
+    document.getElementById('chf-title').value      = habit.title;
+    document.getElementById('chf-desc').value       = habit.desc  || '';
+    document.getElementById('chf-category').value   = habit.tag   || '';
+    const diff = habit.difficultyLevel || 3;
+    document.getElementById('chf-difficulty').value = diff;
+    document.getElementById('chf-diff-label').textContent = `${diff} / 5`;
+
+    // Level is fixed for existing habits (moving between levels is out of scope)
+    levelSel.value    = habit.level;
+    levelSel.disabled = true;
+    levelSel.title    = 'Das Level kann nach dem Erstellen nicht mehr geändert werden.';
+  } else {
+    titleEl.textContent  = 'Eigene Habit hinzufügen';
+    subEl.textContent    = 'Erstelle eine Habit, die zu deiner Persona passt.';
+    submitBtn.textContent = 'Habit speichern';
+
+    levelSel.value    = getPersonaLevel(persona);
+    levelSel.disabled = false;
+    levelSel.title    = '';
+    document.getElementById('chf-diff-label').textContent = '3 / 5';
+  }
+
+  form.onsubmit = e => _handleCustomHabitSubmit(e, persona);
+
+  overlay.classList.add('active');
+  setTimeout(() => document.getElementById('chf-title')?.focus(), 80);
+}
+
+function hideCustomHabitModal() {
+  document.getElementById('customHabitModal')?.classList.remove('active');
+  _editingHabitId    = null;
+  _editingHabitLevel = null;
+  const levelSel = document.getElementById('chf-level');
+  if (levelSel) { levelSel.disabled = false; levelSel.title = ''; }
+}
+
+async function _handleCustomHabitSubmit(e, persona) {
+  e.preventDefault();
+
+  // Clear errors
+  document.querySelectorAll('#customHabitModal .field-error').forEach(el => { el.textContent = ''; });
+
+  const titleVal = document.getElementById('chf-title').value.trim();
+  const descVal  = document.getElementById('chf-desc').value.trim();
+
+  let valid = true;
+  if (titleVal.length < 2) {
+    document.getElementById('chf-title-error').textContent = 'Mindestens 2 Zeichen erforderlich.';
+    valid = false;
+  } else if (titleVal.length > 80) {
+    document.getElementById('chf-title-error').textContent = 'Maximal 80 Zeichen erlaubt.';
+    valid = false;
+  }
+  if (descVal.length > 300) {
+    document.getElementById('chf-desc-error').textContent = 'Maximal 300 Zeichen erlaubt.';
+    valid = false;
+  }
+  if (!valid) return;
+
+  const submitBtn = document.getElementById('customHabitSubmit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Wird gespeichert …';
+
+  try {
+    const payload = {
+      title:           titleVal,
+      description:     descVal || null,
+      category:        document.getElementById('chf-category').value.trim() || null,
+      difficultyLevel: parseInt(document.getElementById('chf-difficulty').value, 10),
+      level:           parseInt(document.getElementById('chf-level').value, 10),
+    };
+
+    if (_editingHabitId) {
+      await updateCustomHabit(_editingHabitId, persona, _editingHabitLevel, payload);
+      showToast('Habit aktualisiert.', 'success');
+    } else {
+      await createCustomHabit(persona, payload);
+      showToast('Neue Habit erstellt!', 'success');
+    }
+
+    hideCustomHabitModal();
+    renderHabits(persona);
+    updateProgress(persona);
+    renderStats();
+  } catch (err) {
+    console.error('Custom habit save error:', err);
+    showToast('Fehler beim Speichern. Bitte erneut versuchen.', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = _editingHabitId ? 'Änderungen speichern' : 'Habit speichern';
+  }
+}
+
+function confirmDeleteCustomHabit(habitId, persona) {
+  const habit = getHabitsForPersona(persona).find(h => h.id === habitId);
+  if (!habit) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'persona-modal-overlay active';
+  overlay.innerHTML = `
+    <div class="persona-modal-card confirm-delete-card">
+      <h3 class="confirm-delete-title">Habit löschen?</h3>
+      <p class="confirm-delete-text">
+        <strong>${escapeHtml(habit.title)}</strong> wird als gelöscht markiert.<br>
+        Bisherige Erledigungen bleiben erhalten.
+      </p>
+      <div class="confirm-delete-actions">
+        <button class="btn-ghost" id="_delCancel">Abbrechen</button>
+        <button class="btn-danger" id="_delOk">Löschen</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  overlay.querySelector('#_delCancel').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  overlay.querySelector('#_delOk').addEventListener('click', async () => {
+    overlay.remove();
+    try {
+      await deleteCustomHabit(habitId, persona, habit.level);
+      showToast('Habit gelöscht.', 'success');
+      renderHabits(persona);
+      updateProgress(persona);
+      renderStats();
+    } catch (err) {
+      console.error('Delete error:', err);
+      showToast('Fehler beim Löschen.', 'error');
+    }
+  });
+}
+
+// ─── Reflexion ────────────────────────────────────────────────────────────────
 
 let reflectionAutoSaveTimer = null;
+
+function updateReflectionCounter() {
+  const box     = document.querySelector('.reflection-box');
+  const counter = document.querySelector('.reflection-counter');
+  if (!counter || !box) return;
+  const n = box.textContent.trim().length;
+  counter.textContent = n > 0 ? `${n} Zeichen` : '';
+}
 
 function initReflection() {
   const box     = document.querySelector('.reflection-box');
@@ -243,20 +616,22 @@ function initReflection() {
 
   const todayKey = getTodayKey();
   const persona  = getActivePersona();
-  const saved    = getReflections()[`${todayKey}_${persona}`];
+  box.textContent = getReflections()[`${todayKey}_${persona}`] || '';
 
-  // Gespeicherten Text laden oder Box leeren (damit CSS-Placeholder greift)
-  box.textContent = saved || '';
+  const counter = document.createElement('div');
+  counter.className = 'reflection-counter';
+  box.insertAdjacentElement('afterend', counter);
+  updateReflectionCounter();
 
-  // Browser fügt manchmal <br> ein wenn Box geleert wird – bereinigen
   box.addEventListener('input', () => {
     if (box.innerHTML === '<br>') box.innerHTML = '';
+    updateReflectionCounter();
     scheduleAutoSave(box, persona);
   });
 
   saveBtn?.addEventListener('click', () => saveReflection(box, persona));
 
-  box.addEventListener('keydown', (e) => {
+  box.addEventListener('keydown', e => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) saveReflection(box, persona);
   });
 }
@@ -266,24 +641,23 @@ function scheduleAutoSave(box, persona) {
   reflectionAutoSaveTimer = setTimeout(() => saveReflection(box, persona, true), 2000);
 }
 
-function saveReflection(box, persona, silent = false) {
+async function saveReflection(box, persona, silent = false) {
   const text     = box.textContent.trim();
   const todayKey = getTodayKey();
-  const data     = getReflections();
 
-  data[`${todayKey}_${persona}`] = text;
-  saveReflections(data);
-
-  if (!silent) {
-    const btn = document.getElementById('saveBtn');
-    if (btn) {
-      btn.textContent = '✓ Gespeichert';
-      btn.classList.add('saved');
-      setTimeout(() => {
-        btn.textContent = 'Speichern';
-        btn.classList.remove('saved');
-      }, 2000);
+  try {
+    await saveReflectionEntry(todayKey, persona, 'daily', text);
+    if (!silent) {
+      const btn = document.getElementById('saveBtn');
+      if (btn) {
+        btn.textContent = '✓ Gespeichert';
+        btn.classList.add('saved');
+        setTimeout(() => { btn.textContent = 'Speichern'; btn.classList.remove('saved'); }, 2000);
+      }
     }
+  } catch (err) {
+    console.error('[dashboard] saveReflection failed:', err.message);
+    if (!silent) showToast('Reflexion konnte nicht gespeichert werden.', 'error');
   }
 }
 
@@ -300,33 +674,46 @@ function initPersonaModal() {
   });
   closeBtn?.addEventListener('click', () => overlay?.classList.remove('active'));
 
-  overlay?.addEventListener('click', (e) => {
+  overlay?.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('active');
-  });
-
-  // Alle Persona-Buttons direkt über data-persona
-  document.querySelectorAll('#activePersonaGrid .persona-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const persona = btn.dataset.persona;
-      if (persona) {
-        unlockPersona(persona);
-        switchPersona(persona);
-        overlay?.classList.remove('active');
-      }
-    });
   });
 }
 
 function updatePersonaModalActive() {
   const current = getActivePersona();
-  document.querySelectorAll('#activePersonaGrid .persona-option').forEach(btn => {
-    btn.classList.toggle('persona-option--active', btn.dataset.persona === current);
+  const all     = getUnlockedPersonas();
+  const grid    = document.getElementById('activePersonaGrid');
+  if (!grid) return;
+
+  grid.innerHTML = all.map(p => {
+    const isDefault = isDefaultPersona(p);
+    const name  = isDefault ? (PERSONA_META[p]?.label || p) : (getPersonaDisplayName(p) || 'Eigene Persona');
+    const desc  = isDefault ? (PERSONA_META[p]?.subs[0] || '') : getPersonaDisplayDesc(p);
+    const color = getPersonaColor(p);
+    const active = current === p ? 'persona-option--active' : '';
+    return `
+      <button class="persona-option ${active}" type="button" data-persona="${p}">
+        <div class="persona-option-visual" style="background:${color};"></div>
+        <h4>${escapeHtml(name)}</h4>
+        <p>${escapeHtml(desc)}</p>
+      </button>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('.persona-option').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const persona = btn.dataset.persona;
+      if (persona) {
+        await switchPersona(persona);
+        document.getElementById('personaModal')?.classList.remove('active');
+      }
+    });
   });
 }
 
-function switchPersona(persona) {
+async function switchPersona(persona) {
   clearTimeout(reflectionAutoSaveTimer);
-  setActivePersona(persona);
+  await setActivePersonaAsync(persona);
   renderPersonaHeader(persona);
   renderHabits(persona);
   renderStats();
@@ -336,16 +723,11 @@ function switchPersona(persona) {
   const saved    = getReflections()[`${todayKey}_${persona}`];
   if (box) {
     box.textContent = saved || '';
-    // Input-Listener neu binden für neue Persona
+    updateReflectionCounter();
     box.oninput = () => {
       if (box.innerHTML === '<br>') box.innerHTML = '';
+      updateReflectionCounter();
       scheduleAutoSave(box, persona);
     };
   }
-}
-
-// ─── Save-Button Init ────────────────────────────────────────────────────────
-
-function initSaveBtn() {
-  // Bereits in initReflection() behandelt
 }

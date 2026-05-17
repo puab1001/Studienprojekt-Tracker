@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Becoming – Demo Seed</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      padding: 2rem;
+      background: #0f0f13;
+      color: #c9d1d9;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    h1 { color: #7f61f2; font-size: 1.4rem; margin-bottom: 0.25rem; }
+    p  { color: #8b949e; font-size: 0.9rem; margin-top: 0.25rem; }
+    .creds {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    .creds span { color: #7f61f2; }
+    button {
+      background: #7f61f2;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: opacity 0.2s;
+    }
+    button:hover:not(:disabled) { opacity: 0.85; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #log {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 1rem;
+      height: 380px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    .ok   { color: #3fb950; }
+    .err  { color: #f85149; }
+    .info { color: #8b949e; }
+    .warn { color: #d29922; }
+    .done { color: #7f61f2; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Becoming · Demo Seed</h1>
+  <p>Erstellt einen Demo-Account mit 30 Tagen Habit-History, 3 Personas und Tagebucheinträgen.</p>
+
+  <div class="creds">
+    E-Mail: <span>demo@becoming.app</span>&emsp;
+    Passwort: <span>Demo2024!</span>&emsp;
+    Name: <span>Alex</span>
+  </div>
+
+  <button id="btn" onclick="runSeed()">Demo-Account erstellen & befüllen</button>
+
+  <div id="log"><div class="info">Bereit. Klicke oben zum Starten.</div></div>
+
+  <script>
+    const SUPABASE_URL  = 'https://gjjuipbhgddguqnwqtcq.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqanVpcGJoZ2RkZ3VxbndxdGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNzM2NzQsImV4cCI6MjA5Mzc0OTY3NH0.WhyAkCwcoNeo0bEUMED_EH6BLu3HKG0qEmMxPpZ-LI4';
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+    const DEMO_EMAIL = 'demo@becoming.app';
+    const DEMO_PASS  = 'Demo2024!';
+    const DEMO_NAME  = 'Alex';
+
+    const logEl = document.getElementById('log');
+    function log(msg, type = 'info') {
+      logEl.innerHTML += `<div class="${type}">${msg}</div>`;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function dateOffset(daysAgo) {
+      const d = new Date();
+      d.setDate(d.getDate() - daysAgo);
+      return d.toISOString().slice(0, 10);
+    }
+
+    async function runSeed() {
+      document.getElementById('btn').disabled = true;
+      logEl.innerHTML = '';
+
+      try {
+        // ── 1. Auth ──────────────────────────────────────────────────────────
+        log('→ Authentifizierung…');
+        let userId;
+
+        const { data: signInData, error: signInErr } = await db.auth.signInWithPassword({
+          email: DEMO_EMAIL, password: DEMO_PASS,
+        });
+
+        if (!signInErr && signInData.session) {
+          userId = signInData.user.id;
+          log(`✓ Angemeldet als ${DEMO_EMAIL}`, 'ok');
+        } else {
+          log('  Kein bestehender Account – registriere…', 'info');
+          const { data: signUpData, error: signUpErr } = await db.auth.signUp({
+            email: DEMO_EMAIL, password: DEMO_PASS,
+          });
+
+          if (signUpErr) throw new Error('Registrierung fehlgeschlagen: ' + signUpErr.message);
+
+          if (!signUpData.session) {
+            log('', 'info');
+            log('⚠  E-Mail-Bestätigung ist aktiviert!', 'warn');
+            log('   Gehe in dein Supabase-Dashboard:', 'warn');
+            log('   Authentication → Providers → Email → "Confirm email" deaktivieren', 'warn');
+            log('   Danach nochmal ausführen.', 'warn');
+            return;
+          }
+
+          userId = signUpData.user.id;
+          log(`✓ Account erstellt (${userId})`, 'ok');
+        }
+
+        // ── 2. User Settings ──────────────────────────────────────────────────
+        log('→ User-Einstellungen…');
+        const { error: settingsErr } = await db.from('user_settings').upsert(
+          { user_id: userId, display_name: DEMO_NAME, active_persona: 'disciplined' },
+          { onConflict: 'user_id' }
+        );
+        if (settingsErr) log(`  ⚠ Settings: ${settingsErr.message}`, 'err');
+        else log('  ✓ display_name=Alex, active_persona=disciplined', 'ok');
+
+        // ── 3. Personas freischalten ──────────────────────────────────────────
+        log('→ Personas freischalten…');
+        const personaConfig = [
+          { persona: 'disciplined', level: 2, startDaysAgo: 30, levelUpDaysAgo: 14 },
+          { persona: 'curious',     level: 1, startDaysAgo: 21, levelUpDaysAgo: 21 },
+          { persona: 'resilient',   level: 1, startDaysAgo: 14, levelUpDaysAgo: 14 },
+        ];
+
+        for (const p of personaConfig) {
+          const createdAt      = new Date(); createdAt.setDate(createdAt.getDate() - p.startDaysAgo);
+          const levelUpdatedAt = dateOffset(p.levelUpDaysAgo);
+          const { error } = await db.from('user_personas').upsert(
+            {
+              user_id:          userId,
+              persona:          p.persona,
+              level:            p.level,
+              level_updated_at: levelUpdatedAt,
+              created_at:       createdAt.toISOString(),
+            },
+            { onConflict: 'user_id,persona' }
+          );
+          if (error) log(`  ⚠ ${p.persona}: ${error.message}`, 'err');
+          else log(`  ✓ ${p.persona} – Level ${p.level}, gestartet vor ${p.startDaysAgo} Tagen`, 'ok');
+        }
+
+        // ── 4. Habit-IDs laden ────────────────────────────────────────────────
+        log('→ Lade Habit-Definitionen aus DB…');
+        const legacyIds = [
+          'dh2_1','dh2_2','dh2_3','dh2_4','dh2_5',   // disciplined L2
+          'ch1','ch2','ch3','ch4','ch5',               // curious L1
+          'rh1','rh2','rh3','rh4','rh5',               // resilient L1
+        ];
+        const { data: habitRows, error: habitErr } = await db
+          .from('habits')
+          .select('id,legacy_id,persona_id')
+          .in('legacy_id', legacyIds);
+
+        if (habitErr) throw new Error('Habits laden fehlgeschlagen: ' + habitErr.message);
+        if (!habitRows.length) throw new Error('Keine Habits gefunden – wurden die Migrations ausgeführt?');
+
+        const hm = {};
+        habitRows.forEach(h => { hm[h.legacy_id] = h.id; });
+        log(`  ✓ ${habitRows.length}/15 Habits geladen`, 'ok');
+
+        // ── 5. Completions generieren ─────────────────────────────────────────
+        log('→ Completions generieren…');
+
+        const disciplinedHabits = ['dh2_1','dh2_2','dh2_3','dh2_4','dh2_5'];
+        const curiousHabits     = ['ch1','ch2','ch3','ch4','ch5'];
+        const resilientHabits   = ['rh1','rh2','rh3','rh4','rh5'];
+
+        // Realistisches Muster: Zahl der tägl. abgehakten Habits (Index 0..n-1)
+        // disciplined: 30 Tage, hohe Adhärenz (4-5/5)
+        const disciplinedPattern = [5,4,4,5,3,4,4,5,4,4, 5,4,3,4,5,4,4,5,4,3, 4,4,5,4,4,5,3,4,4,5];
+        // curious: 21 Tage, gute Adhärenz (3-4/5)
+        const curiousPattern     = [4,3,4,3,4,3,4,4,3,4, 3,3,4,3,4,4,3,4,3,3, 4];
+        // resilient: 14 Tage, moderate Adhärenz (2-4/5)
+        const resilientPattern   = [3,2,4,3,2,3,4,2,3,3, 2,4,3,2];
+
+        const completions = [];
+
+        disciplinedPattern.forEach((n, i) => {
+          const date = dateOffset(i + 1);
+          for (let j = 0; j < n; j++) {
+            const lid = disciplinedHabits[j];
+            if (hm[lid]) completions.push({ user_id: userId, habit_id: hm[lid], persona_id: 'disciplined', day_date: date });
+          }
+        });
+
+        curiousPattern.forEach((n, i) => {
+          const date = dateOffset(i + 1);
+          for (let j = 0; j < n; j++) {
+            const lid = curiousHabits[j];
+            if (hm[lid]) completions.push({ user_id: userId, habit_id: hm[lid], persona_id: 'curious', day_date: date });
+          }
+        });
+
+        resilientPattern.forEach((n, i) => {
+          const date = dateOffset(i + 1);
+          for (let j = 0; j < n; j++) {
+            const lid = resilientHabits[j];
+            if (hm[lid]) completions.push({ user_id: userId, habit_id: hm[lid], persona_id: 'resilient', day_date: date });
+          }
+        });
+
+        // Batch-Upsert in 50er-Blöcken
+        const CHUNK = 50;
+        let inserted = 0;
+        for (let i = 0; i < completions.length; i += CHUNK) {
+          const { error } = await db.from('habit_completions').upsert(
+            completions.slice(i, i + CHUNK),
+            { onConflict: 'user_id,habit_id,day_date' }
+          );
+          if (error) log(`  ⚠ Chunk ${i}–${i+CHUNK}: ${error.message}`, 'err');
+          else inserted += Math.min(CHUNK, completions.length - i);
+        }
+        log(`  ✓ ${inserted} Completions eingefügt (30 / 21 / 14 Tage)`, 'ok');
+
+        // ── 6. Reflexionen ────────────────────────────────────────────────────
+        log('→ Tagebuch-Reflexionen einfügen…');
+        const reflections = [
+          {
+            user_id: userId, persona: 'disciplined', type: 'daily',
+            date: dateOffset(1),
+            content: 'Heute eine wirklich starke Session – zwei Stunden Deep Work ohne eine einzige Ablenkung. Das No-Social-Media-Morgen fühlt sich inzwischen ganz natürlich an. Ich merke wie sich der Kopf morgens klarer anfühlt.',
+          },
+          {
+            user_id: userId, persona: 'disciplined', type: 'daily',
+            date: dateOffset(4),
+            content: 'Schwieriger Tag. Die Abendroutine hab ich verschlafen, aber die Morgenplanung hat mir geholfen trotzdem die wichtigsten Dinge zu erledigen. Morgen früher aufstehen und konsequenter sein.',
+          },
+          {
+            user_id: userId, persona: 'disciplined', type: 'daily',
+            date: dateOffset(9),
+            content: 'Woche 2 läuft richtig gut. Die Struktur trägt sich jetzt fast von selbst. Besonders die 10-Minuten-Planung am Morgen ist Gold wert – ich verschwende viel weniger Zeit mit Entscheidungen was ich als nächstes tun soll.',
+          },
+          {
+            user_id: userId, persona: 'curious', type: 'daily',
+            date: dateOffset(2),
+            content: 'Heute einen Essay über kognitives Framing gelesen und direkt mit meinem eigenen Studium verknüpft. Das Gefühl wenn zwei scheinbar unzusammenhängende Dinge plötzlich eine Verbindung ergeben ist unbezahlbar.',
+          },
+          {
+            user_id: userId, persona: 'curious', type: 'daily',
+            date: dateOffset(7),
+            content: 'Podcast über Schlafforschung gehört und dabei gemerkt dass ich fast alle Ratschläge schon intuitiv befolge. Trotzdem drei neue Erkenntnisse mitgenommen. Werde die Feynman-Methode morgen für Mathe ausprobieren.',
+          },
+          {
+            user_id: userId, persona: 'resilient', type: 'daily',
+            date: dateOffset(1),
+            content: 'Erster echter Stresstest heute. Statt sofort zu reagieren habe ich bewusst drei Mal tief geatmet. Hat funktioniert. Die Meditation am Abend war kurz aber intensiv.',
+          },
+        ];
+
+        let savedReflections = 0;
+        for (const r of reflections) {
+          const { error } = await db.from('reflections').upsert(
+            r, { onConflict: 'user_id,date,persona,type' }
+          );
+          if (error) log(`  ⚠ Reflexion ${r.date}: ${error.message}`, 'err');
+          else savedReflections++;
+        }
+        log(`  ✓ ${savedReflections} Tagebucheinträge eingefügt`, 'ok');
+
+        // ── Fertig ────────────────────────────────────────────────────────────
+        log('', 'info');
+        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+        log('✅  Demo-Account vollständig befüllt!', 'done');
+        log('', 'info');
+        log(`   E-Mail:   ${DEMO_EMAIL}`, 'ok');
+        log(`   Passwort: ${DEMO_PASS}`, 'ok');
+        log('', 'info');
+        log('   Personas:', 'info');
+        log('   • disciplined – Level 2 – 30 Tage History', 'ok');
+        log('   • curious     – Level 1 – 21 Tage History', 'ok');
+        log('   • resilient   – Level 1 – 14 Tage History', 'ok');
+        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'info');
+
+      } catch (err) {
+        log('', 'info');
+        log('❌  Fehler: ' + err.message, 'err');
+        console.error(err);
+      } finally {
+        document.getElementById('btn').disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
