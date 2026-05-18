@@ -290,7 +290,7 @@ function renderAddSection() {
         await unlockPersonaAsync(key);
       }
       await setActivePersonaAsync(key);
-      window.location.href = '/dashboard.html';
+      window.location.href = 'dashboard.html';
     });
   });
 
@@ -442,7 +442,7 @@ function showCreatePersonaModal() {
       const key     = await createCustomPersonaAsync(nameVal, descVal, _cpmSelectedColor);
       await setActivePersonaAsync(key);
       overlay.remove();
-      window.location.href = '/dashboard.html';
+      window.location.href = 'dashboard.html';
     } catch (err) {
       console.error('[hub] createCustomPersona failed:', err);
       showToast('Fehler beim Erstellen. Bitte erneut versuchen.', 'error');

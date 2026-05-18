@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Falls bereits eingeloggt → direkt zu Heute
   const { data: { session } } = await db.auth.getSession();
   if (session) {
-    window.location.href = '/logged_in_landing.html';
+    window.location.href = 'logged_in_landing.html';
     return;
   }
 
@@ -100,7 +100,7 @@ function initLoginForm() {
       return;
     }
 
-    window.location.href = '/logged_in_landing.html';
+    window.location.href = 'logged_in_landing.html';
   });
 }
 
@@ -147,7 +147,7 @@ function initRegisterForm() {
     await initNewUser(userId, name);
 
     localStorage.setItem('becoming_show_onboarding', 'true');
-    window.location.href = '/logged_in_landing.html';
+    window.location.href = 'logged_in_landing.html';
   });
 }
 

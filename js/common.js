@@ -23,7 +23,7 @@ async function initPage() {
   const { data: { session } } = await db.auth.getSession();
 
   if (protectedPages.includes(currentPage) && !session) {
-    window.location.href = '/index.html';
+    window.location.href = 'index.html';
     return false;
   }
 
@@ -287,7 +287,7 @@ async function logout() {
   } catch (e) {
     console.warn('Sign-out error (offline?):', e);
   }
-  window.location.href = '/index.html';
+  window.location.href = 'index.html';
 }
 
 // ─── Interne UI-Setup-Funktionen ──────────────────────────────────────────────
@@ -307,14 +307,14 @@ function _setupNav(currentPage) {
   const wrapper = document.createElement('div');
   wrapper.className = 'nav-links';
   wrapper.innerHTML = `
-    <a href="/logged_in_landing.html" class="nav-link${isHome ? ' active' : ''}">Home</a>
+    <a href="logged_in_landing.html" class="nav-link${isHome ? ' active' : ''}">Home</a>
     <div class="nav-dropdown-wrap">
-      <a href="/dashboard.html" class="nav-link nav-persona-pill${isDashboard ? ' active' : ''}" style="background:${personaColor};color:white;">
+      <a href="dashboard.html" class="nav-link nav-persona-pill${isDashboard ? ' active' : ''}" style="background:${personaColor};color:white;">
         ${escapeHtml(personaLabel)}
       </a>
       <div class="nav-dropdown" id="_navPersonaDrop"></div>
     </div>
-    <a href="/tagebuch.html" class="nav-link${isTagebuch ? ' active' : ''}">Tagebuch</a>
+    <a href="tagebuch.html" class="nav-link${isTagebuch ? ' active' : ''}">Tagebuch</a>
   `;
 
   // Populate persona dropdown
@@ -336,7 +336,7 @@ function _setupNav(currentPage) {
         e.preventDefault();
         e.stopPropagation();
         try { await setActivePersonaAsync(btn.dataset.persona); } catch (_) {}
-        window.location.href = '/dashboard.html';
+        window.location.href = 'dashboard.html';
       });
     });
   }
@@ -391,7 +391,7 @@ function _setupUserDisplay() {
 }
 
 function _setupLogout() {
-  document.querySelectorAll('a[href="/index.html"]').forEach(link => {
+  document.querySelectorAll('a[href="index.html"]').forEach(link => {
     if (link.closest('.user-dropdown')) {
       link.addEventListener('click', e => {
         e.preventDefault();
