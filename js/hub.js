@@ -6,31 +6,31 @@ const HUB_PERSONA_META = {
     label: 'The Disciplined',
     desc:  'Selbstkontrolle, Routine und bewusste Entscheidungen für mehr Stabilität im Alltag.',
     color: 'var(--disciplined)',
-    href:  '/dashboard.html',
+    href:  'dashboard.html',
   },
   curious: {
     label: 'The Curious',
     desc:  'Lernen, Offenheit und tägliche geistige Bewegung durch kleine, konsequente Impulse.',
     color: 'var(--curious)',
-    href:  '/dashboard.html',
+    href:  'dashboard.html',
   },
   resilient: {
     label: 'The Resilient',
     desc:  'Erholung, Anpassung und Durchhaltevermögen ohne dich dabei selbst zu verlieren.',
     color: 'var(--resilient)',
-    href:  '/dashboard.html',
+    href:  'dashboard.html',
   },
   intentional: {
     label: 'The Intentional',
     desc:  'Bewusste Entscheidungen und klare Prioritäten für einen fokussierten Tag.',
     color: 'var(--intentional)',
-    href:  '/dashboard.html',
+    href:  'dashboard.html',
   },
   connected: {
     label: 'The Connected',
     desc:  'Präsenz, Empathie und stärkere Beziehungen durch bewusste soziale Gewohnheiten.',
     color: 'var(--connected)',
-    href:  '/dashboard.html',
+    href:  'dashboard.html',
   },
 };
 
@@ -125,7 +125,7 @@ function renderPersonaList() {
             <span class="persona-meta">+${weeklyXP} XP diese Woche</span>
           </div>
         </div>
-        <a href="/dashboard.html" class="btn-primary" data-persona="${key}">
+        <a href="dashboard.html" class="btn-primary" data-persona="${key}">
           ${done > 0 ? 'Weiter' : 'Starten'}
         </a>
       </article>

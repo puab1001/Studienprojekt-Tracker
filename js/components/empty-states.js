@@ -53,7 +53,7 @@ function renderWeeklyEmptyState(container) {
     icon,
     headline: 'Noch keine Aktivität diese Woche',
     subtext:  'Beginne heute mit deinen Habits und baue eine Streak auf.',
-    cta: { label: 'Zum Dashboard', href: '/dashboard.html' },
+    cta: { label: 'Zum Dashboard', href: 'dashboard.html' },
   });
 }
 
@@ -68,6 +68,6 @@ function renderStatsEmptyState(container, activeDays) {
     subtext:  activeDays === 0
       ? 'Starte deine ersten Habits, damit deine Statistiken sichtbar werden.'
       : `Du hast erst ${activeDays} aktive ${activeDays === 1 ? 'Tag' : 'Tage'}. Noch ${remaining} ${remaining === 1 ? 'Tag' : 'Tage'} bis aussagekräftige Trends sichtbar werden.`,
-    cta: { label: 'Heute Habits tracken', href: '/dashboard.html' },
+    cta: { label: 'Heute Habits tracken', href: 'dashboard.html' },
   });
 }

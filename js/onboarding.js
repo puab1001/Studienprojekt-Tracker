@@ -231,7 +231,7 @@ function _renderStep4(body) {
         <span class="ob-habit-label">${first.title}</span>
       </label>
     ` : ''}
-    <a href="/dashboard.html" class="btn-primary ob-finish" id="ob4Finish">Zum Dashboard</a>
+    <a href="dashboard.html" class="btn-primary ob-finish" id="ob4Finish">Zum Dashboard</a>
   `;
 
   const checkEl = document.getElementById('obFirstHabitCheck');

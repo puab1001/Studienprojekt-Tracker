@@ -71,7 +71,7 @@ function _renderPersonaAccordions() {
       <div class="tb-empty">
         <h3>Keine aktiven Personas</h3>
         <p>Füge eine Persona hinzu, um loszulegen.</p>
-        <a href="/logged_in_landing.html" class="btn-primary tb-empty-cta">Zur Übersicht</a>
+        <a href="logged_in_landing.html" class="btn-primary tb-empty-cta">Zur Übersicht</a>
       </div>`;
     return;
   }
